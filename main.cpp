@@ -90,6 +90,14 @@ int main(int, char**) {
   TVMArrayAlloc(shape, ndim, dtype_code, dtype_bits, dtype_lanes, device_type, device_id, &input_tensor);
   TVMArrayFree(input_tensor);
 
+  tvm::runtime::Module mod_factory = tvm::runtime::Module::LoadFromFile("/home/pi/work/mukham/build/version-RFB-640/mod.so");
+#if 1
+      tvm::runtime::Module gmod =  mod_factory.GetFunction("default")(device_type);
+      tvm::runtime::PackedFunc set_input = gmod.GetFunction("set_input");
+      tvm::runtime::PackedFunc get_outptu = gmod.GetFunction("get_output");
+      tvm::runtime::PackedFunc run = gmod.GetFunction("run");
+#endif
+
   cv::VideoCapture camera(0);
   camera.set(cv::CAP_PROP_FRAME_HEIGHT, 640);
   camera.set(cv::CAP_PROP_FRAME_WIDTH,  480);
