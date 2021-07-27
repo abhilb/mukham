@@ -1,36 +1,39 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
-#include <utility>
+#include <opencv2/core/core.hpp>
+#include <stdio.h>
 #include <string>
+#include <utility>
 
 #include "dlpack/dlpack.h"
 #include "tvm/runtime/module.h"
+#include "tvm/runtime/ndarray.h"
 #include "tvm/runtime/packed_func.h"
 
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 
-void LoadImage(const unsigned char* image_data, const int& height, const int& width,  GLuint* texture)
-{
-    GLuint image_texture;
-    glGenTextures(1, &image_texture);
-    glBindTexture(GL_TEXTURE_2D, image_texture);
+void LoadImage(const unsigned char *image_data, const int &height,
+               const int &width, GLuint *texture) {
+  GLuint image_texture;
+  glGenTextures(1, &image_texture);
+  glBindTexture(GL_TEXTURE_2D, image_texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_data);
-    *texture = image_texture;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+               GL_UNSIGNED_BYTE, image_data);
+  *texture = image_texture;
 }
 
-int main(int, char**) {
+int main(int, char **) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
       0) {
     printf("Error: %s\n", SDL_GetError());
@@ -46,17 +49,17 @@ int main(int, char**) {
   SDL_WindowFlags window_flags =
       (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
                         SDL_WINDOW_ALLOW_HIGHDPI);
-  SDL_Window* window =
-      SDL_CreateWindow("Mukham", SDL_WINDOWPOS_CENTERED,
-                       SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+  SDL_Window *window =
+      SDL_CreateWindow("Mukham", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                       1280, 720, window_flags);
   SDL_GLContext gl_context = SDL_GL_CreateContext(window);
   SDL_GL_MakeCurrent(window, gl_context);
-  SDL_GL_SetSwapInterval(1);  // Enable vsync
+  SDL_GL_SetSwapInterval(1); // Enable vsync
 
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
+  ImGuiIO &io = ImGui::GetIO();
   (void)io;
   // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
   // Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
@@ -74,7 +77,7 @@ int main(int, char**) {
   bool show_demo_window = true;
   bool show_another_window = false;
   bool record_video = true;
-  std::string btn_txt { "Stop Video" };
+  std::string btn_txt{"Stop Video"};
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // TVM related
@@ -84,26 +87,27 @@ int main(int, char**) {
   int dtype_bits = 32;
   int dtype_lanes = 1;
   int device_id = 0;
-  int64_t shape[4] = { 1, 640, 480, 3 };
+  int64_t shape[4] = {1, 128, 128, 3};
 
-  DLTensor* input_tensor;
-  TVMArrayAlloc(shape, ndim, dtype_code, dtype_bits, dtype_lanes, device_type, device_id, &input_tensor);
-  TVMArrayFree(input_tensor);
+  DLDevice dev{kDLCPU, 0};
 
-  tvm::runtime::Module mod_factory = tvm::runtime::Module::LoadFromFile("/home/pi/work/mukham/build/version-RFB-640/mod.so");
-#if 1
-      tvm::runtime::Module gmod =  mod_factory.GetFunction("default")(device_type);
-      tvm::runtime::PackedFunc set_input = gmod.GetFunction("set_input");
-      tvm::runtime::PackedFunc get_outptu = gmod.GetFunction("get_output");
-      tvm::runtime::PackedFunc run = gmod.GetFunction("run");
-#endif
+  tvm::runtime::Module mod_factory = tvm::runtime::Module::LoadFromFile(
+      "/home/pi/work/mukham/build/face_detection_short_range.so");
+  tvm::runtime::Module gmod = mod_factory.GetFunction("default")(dev);
+  tvm::runtime::PackedFunc set_input = gmod.GetFunction("set_input");
+  tvm::runtime::PackedFunc get_output = gmod.GetFunction("get_output");
+  tvm::runtime::PackedFunc run = gmod.GetFunction("run");
+
+  auto input_tensor = tvm::runtime::NDArray::Empty({1, 128, 128, 3},          DLDataType{kDLFloat, 32, 1}, dev);
+  auto output_tensor_1 = tvm::runtime::NDArray::Empty({1, 896, 16}, DLDataType{kDLFloat, 32, 1}, dev);
+  auto output_tensor_2 = tvm::runtime::NDArray::Empty({1, 896, 1}, DLDataType{kDLFloat, 32, 1}, dev);
 
   cv::VideoCapture camera(0);
-  camera.set(cv::CAP_PROP_FRAME_HEIGHT, 640);
-  camera.set(cv::CAP_PROP_FRAME_WIDTH,  480);
+  camera.set(cv::CAP_PROP_FRAME_HEIGHT, 128);
+  camera.set(cv::CAP_PROP_FRAME_WIDTH, 128);
 
   if (!camera.isOpened())
-      printf("Failed to open the camera");
+    printf("Failed to open the camera");
 
   // Main loop
   bool done = false;
@@ -111,7 +115,8 @@ int main(int, char**) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
       ImGui_ImplSDL2_ProcessEvent(&event);
-      if (event.type == SDL_QUIT) done = true;
+      if (event.type == SDL_QUIT)
+        done = true;
       if (event.type == SDL_WINDOWEVENT &&
           event.window.event == SDL_WINDOWEVENT_CLOSE &&
           event.window.windowID == SDL_GetWindowID(window))
@@ -127,13 +132,12 @@ int main(int, char**) {
       static int counter = 0;
 
       ImGui::Begin("Mukham");
-      if (ImGui::Button(btn_txt.c_str()))
-      {
-	  record_video = !record_video;
-	  if(record_video)
-	      btn_txt = "Stop Video";
-	  else
-	      btn_txt = "Start Video";
+      if (ImGui::Button(btn_txt.c_str())) {
+        record_video = !record_video;
+        if (record_video)
+          btn_txt = std::string {"Stop Video"};
+        else
+          btn_txt = std::string {"Start Video"};
       }
 
       ImGui::Text("Frames = %d", counter);
@@ -142,26 +146,34 @@ int main(int, char**) {
       ImGui::End();
 
       ImGui::Begin("Video");
-      if(record_video) {
-	  cv::Mat frame;
-	  camera >> frame;
-	  counter++;
+      if (record_video) {
+        cv::Mat frame;
+        camera >> frame;
+        cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+        counter++;
 
-	  if (frame.size[0] > 0 && frame.size[1])
-	  {
-	      auto width = 640;
-	      auto height = 480;
+        if (frame.size[0] > 0 && frame.size[1]) {
+          auto width = 128;
+          auto height = 128;
 
-	      cv::Mat scaled_frame;
-	      cv::resize(frame, scaled_frame, cv::Size(width, height), cv::INTER_LINEAR);
-	      GLuint image_texture;
-	      LoadImage(scaled_frame.ptr(), height, width, &image_texture);
-	      ImGui::Image((void*)(intptr_t)image_texture, ImVec2(width, height));
-	  }
+          cv::Mat scaled_frame;
+          cv::resize(frame, scaled_frame, cv::Size(width, height),
+                     cv::INTER_LINEAR);
+          GLuint image_texture;
+          LoadImage(scaled_frame.ptr(), height, width, &image_texture);
+          ImGui::Image((void *)(intptr_t)image_texture, ImVec2(width, height));
+
+          // Copy image data to tensor
+          size_t image_size = height * width * 3 * sizeof(float);
+          cv::Mat preprocessed_frame = cv::Mat(128, 128, CV_32FC3);
+          scaled_frame.convertTo(preprocessed_frame, CV_32FC3);
+          input_tensor.CopyFromBytes((void*)(preprocessed_frame.data), image_size);
+          set_input("input", input_tensor);
+          run();
+        }
       }
       ImGui::End();
     }
-
 
     // Rendering
     ImGui::Render();
@@ -172,6 +184,7 @@ int main(int, char**) {
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(window);
   }
+
 
   // Cleanup
   ImGui_ImplOpenGL2_Shutdown();
