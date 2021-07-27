@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/main.cpp.o -c /home/pi/work/mukham/main.cpp",
+  "file": "/home/pi/work/mukham/main.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui.cpp.o -c /home/pi/work/mukham/imgui/imgui.cpp",
+  "file": "/home/pi/work/mukham/imgui/imgui.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_demo.cpp.o -c /home/pi/work/mukham/imgui/imgui_demo.cpp",
+  "file": "/home/pi/work/mukham/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_draw.cpp.o -c /home/pi/work/mukham/imgui/imgui_draw.cpp",
+  "file": "/home/pi/work/mukham/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_tables.cpp.o -c /home/pi/work/mukham/imgui/imgui_tables.cpp",
+  "file": "/home/pi/work/mukham/imgui/imgui_tables.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_widgets.cpp.o -c /home/pi/work/mukham/imgui/imgui_widgets.cpp",
+  "file": "/home/pi/work/mukham/imgui/imgui_widgets.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_sdl.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_sdl.cpp",
+  "file": "/home/pi/work/mukham/imgui/backends/imgui_impl_sdl.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/dlpack/include -I/home/pi/work/mukham/dmlc-core/include -I/usr/include/SDL2  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_opengl2.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_opengl2.cpp",
+  "file": "/home/pi/work/mukham/imgui/backends/imgui_impl_opengl2.cpp"
+}
+]
