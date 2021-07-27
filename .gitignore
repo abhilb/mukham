@@ -28,6 +28,11 @@ ipch
 
 ## Commonly used CMake directories
 /build*/
+/models/
+
+/scripts/.venv
+/scripts/.pkl_memoize_py3
+
 
 ## Xcode artifacts
 project.xcworkspace
