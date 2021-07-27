@@ -13,6 +13,9 @@ examples/*/Debug/*
 examples/*/Release/*
 examples/*/x64/*
 
+## Clangd cache
+.cache/
+
 ## Visual Studio artifacts
 .vs
 ipch
