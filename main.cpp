@@ -1,6 +1,7 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <opencv2/core/cvstd.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/core.hpp>
@@ -66,8 +67,8 @@ int main(int, char **) {
   // Enable Gamepad Controls
 
   // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
-  // ImGui::StyleColorsClassic();
+  // ImGui::StyleColorsDark();
+  ImGui::StyleColorsClassic();
 
   // Setup Platform/Renderer backends
   ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
@@ -77,7 +78,10 @@ int main(int, char **) {
   bool show_demo_window = true;
   bool show_another_window = false;
   bool record_video = true;
+  bool play_video = false;
+  int video_src = 0;
   std::string btn_txt{"Stop Video"};
+  std::string play_btn_txt{"Pause"};
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // TVM related
@@ -102,12 +106,9 @@ int main(int, char **) {
   auto output_tensor_1 = tvm::runtime::NDArray::Empty({1, 896, 16}, DLDataType{kDLFloat, 32, 1}, dev);
   auto output_tensor_2 = tvm::runtime::NDArray::Empty({1, 896, 1}, DLDataType{kDLFloat, 32, 1}, dev);
 
-  cv::VideoCapture camera(0);
-  camera.set(cv::CAP_PROP_FRAME_HEIGHT, 128);
-  camera.set(cv::CAP_PROP_FRAME_WIDTH, 128);
-
-  if (!camera.isOpened())
-    printf("Failed to open the camera");
+  bool is_camera_open = false;
+  int prev_video_src = 0;
+  cv::VideoCapture camera;
 
   // Main loop
   bool done = false;
@@ -132,12 +133,52 @@ int main(int, char **) {
       static int counter = 0;
 
       ImGui::Begin("Mukham");
-      if (ImGui::Button(btn_txt.c_str())) {
-        record_video = !record_video;
-        if (record_video)
-          btn_txt = std::string {"Stop Video"};
-        else
-          btn_txt = std::string {"Start Video"};
+
+      ImGui::RadioButton("Camera", &video_src, 0); 
+      ImGui::SameLine();
+      ImGui::RadioButton("TestVideo", &video_src, 1);
+
+      if(video_src != prev_video_src)
+      {
+          camera.release();
+          prev_video_src = video_src;
+          printf("Camera released\n");
+          is_camera_open = false;
+      }
+
+      if (video_src == 0) {
+          
+          if(!is_camera_open) {
+              printf("Opening the camera");
+              is_camera_open = camera.open(0);
+              camera.set(cv::CAP_PROP_FRAME_HEIGHT, 128);
+              camera.set(cv::CAP_PROP_FRAME_WIDTH, 128);
+              // If the video src is camera then show the start video
+              // and stop video buttons
+              if (ImGui::Button(btn_txt.c_str())) {
+                record_video = !record_video;
+                if (record_video)
+                  btn_txt = std::string {"Stop Video"};
+                else
+                  btn_txt = std::string {"Start Video"};
+              }
+          }
+      } else {
+          const cv::String test_video_fname {"face-demographics-walking.mp4"};
+
+          if(!is_camera_open){
+              is_camera_open = camera.open(test_video_fname);
+
+              // Show the play and pause button
+              if(ImGui::Button(play_btn_txt.c_str())) {
+                  play_video  = !play_video ;
+                  if(play_video)
+                      play_btn_txt = std::string{"Pause"};
+                  else
+                      play_btn_txt = std::string{"Play"};
+              }
+              ImGui::Text("https://github.com/intel-iot-devkit/sample-videos/blob/master/face-demographics-walking.mp4");
+          }
       }
 
       ImGui::Text("Frames = %d", counter);
@@ -173,8 +214,6 @@ int main(int, char **) {
           get_output(0, output_tensor_1);
           get_output(1, output_tensor_2);
           auto confidence_values = static_cast<float*>(output_tensor_2->data);
-          for(int i=0; i<896; ++i)
-              printf("%lf\n", confidence_values[i]);
         }
       }
       ImGui::End();
