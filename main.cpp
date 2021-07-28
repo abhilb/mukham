@@ -170,6 +170,11 @@ int main(int, char **) {
           input_tensor.CopyFromBytes((void*)(preprocessed_frame.data), image_size);
           set_input("input", input_tensor);
           run();
+          get_output(0, output_tensor_1);
+          get_output(1, output_tensor_2);
+          auto confidence_values = static_cast<float*>(output_tensor_2->data);
+          for(int i=0; i<896; ++i)
+              printf("%lf\n", confidence_values[i]);
         }
       }
       ImGui::End();
