@@ -1,10 +1,11 @@
 
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <opencv2/core/core.hpp>
 #include <opencv2/core/cvstd.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
-#include <opencv2/core/core.hpp>
 #include <stdio.h>
 #include <string>
 #include <utility>
@@ -17,6 +18,9 @@
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+
+unsigned int display_image_width = 512;
+unsigned int display_image_height = 512;
 
 void LoadImage(const unsigned char *image_data, const int &height,
                const int &width, GLuint *texture) {
@@ -75,13 +79,11 @@ int main(int, char **) {
   ImGui_ImplOpenGL2_Init();
 
   // Our state
-  bool show_demo_window = true;
-  bool show_another_window = false;
-  bool record_video = true;
+  bool record_video = false;
   bool play_video = false;
   int video_src = 0;
-  std::string btn_txt{"Stop Video"};
-  std::string play_btn_txt{"Pause"};
+  std::string btn_txt{"Start Video"};
+  std::string play_btn_txt{"Play"};
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // TVM related
@@ -102,12 +104,16 @@ int main(int, char **) {
   tvm::runtime::PackedFunc get_output = gmod.GetFunction("get_output");
   tvm::runtime::PackedFunc run = gmod.GetFunction("run");
 
-  auto input_tensor = tvm::runtime::NDArray::Empty({1, 128, 128, 3},          DLDataType{kDLFloat, 32, 1}, dev);
-  auto output_tensor_1 = tvm::runtime::NDArray::Empty({1, 896, 16}, DLDataType{kDLFloat, 32, 1}, dev);
-  auto output_tensor_2 = tvm::runtime::NDArray::Empty({1, 896, 1}, DLDataType{kDLFloat, 32, 1}, dev);
+  auto input_tensor = tvm::runtime::NDArray::Empty(
+      {1, 128, 128, 3}, DLDataType{kDLFloat, 32, 1}, dev);
+  auto output_tensor_1 = tvm::runtime::NDArray::Empty(
+      {1, 896, 16}, DLDataType{kDLFloat, 32, 1}, dev);
+  auto output_tensor_2 = tvm::runtime::NDArray::Empty(
+      {1, 896, 1}, DLDataType{kDLFloat, 32, 1}, dev);
 
   bool is_camera_open = false;
   int prev_video_src = 0;
+  unsigned int nb_frames = 0;
   cv::VideoCapture camera;
 
   // Main loop
@@ -134,51 +140,51 @@ int main(int, char **) {
 
       ImGui::Begin("Mukham");
 
-      ImGui::RadioButton("Camera", &video_src, 0); 
+      ImGui::RadioButton("Camera", &video_src, 0);
       ImGui::SameLine();
       ImGui::RadioButton("TestVideo", &video_src, 1);
 
-      if(video_src != prev_video_src)
-      {
-          camera.release();
-          prev_video_src = video_src;
-          printf("Camera released\n");
-          is_camera_open = false;
+      if (video_src != prev_video_src) {
+        camera.release();
+        prev_video_src = video_src;
+        printf("Camera released\n");
+        is_camera_open = false;
       }
 
       if (video_src == 0) {
-          
-          if(!is_camera_open) {
-              printf("Opening the camera");
-              is_camera_open = camera.open(0);
-              camera.set(cv::CAP_PROP_FRAME_HEIGHT, 128);
-              camera.set(cv::CAP_PROP_FRAME_WIDTH, 128);
-              // If the video src is camera then show the start video
-              // and stop video buttons
-              if (ImGui::Button(btn_txt.c_str())) {
-                record_video = !record_video;
-                if (record_video)
-                  btn_txt = std::string {"Stop Video"};
-                else
-                  btn_txt = std::string {"Start Video"};
-              }
-          }
+
+        if (!is_camera_open) {
+          printf("Opening the camera\n\n");
+          is_camera_open = camera.open(0);
+          camera.set(cv::CAP_PROP_FRAME_HEIGHT, (double)display_image_height);
+          camera.set(cv::CAP_PROP_FRAME_WIDTH, (double)display_image_width);
+        }
+        // If the video src is camera then show the start video
+        // and stop video buttons
+        if (ImGui::Button(btn_txt.c_str())) {
+          record_video = !record_video;
+          if (record_video)
+            btn_txt = std::string{"Stop Video"};
+          else
+            btn_txt = std::string{"Start Video"};
+        }
       } else {
-          const cv::String test_video_fname {"face-demographics-walking.mp4"};
+        const cv::String test_video_fname{"face-demographics-walking.mp4"};
 
-          if(!is_camera_open){
-              is_camera_open = camera.open(test_video_fname);
-
-              // Show the play and pause button
-              if(ImGui::Button(play_btn_txt.c_str())) {
-                  play_video  = !play_video ;
-                  if(play_video)
-                      play_btn_txt = std::string{"Pause"};
-                  else
-                      play_btn_txt = std::string{"Play"};
-              }
-              ImGui::Text("https://github.com/intel-iot-devkit/sample-videos/blob/master/face-demographics-walking.mp4");
-          }
+        if (!is_camera_open) {
+          is_camera_open = camera.open(test_video_fname);
+          nb_frames = camera.get(cv::CAP_PROP_FRAME_COUNT);
+        }
+        // Show the play and pause button
+        if (ImGui::Button(play_btn_txt.c_str())) {
+          record_video = !record_video;
+          if (record_video)
+            play_btn_txt = std::string{"Pause"};
+          else
+            play_btn_txt = std::string{"Play"};
+        }
+        ImGui::Text("https://github.com/intel-iot-devkit/sample-videos/blob/"
+                    "master/face-demographics-walking.mp4");
       }
 
       ImGui::Text("Frames = %d", counter);
@@ -188,32 +194,60 @@ int main(int, char **) {
 
       ImGui::Begin("Video");
       if (record_video) {
+        // Get the video frame
+
         cv::Mat frame;
         camera >> frame;
+
+        // Convert the frame to RGB
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
         counter++;
 
+        // Reset the video 
+        if (video_src == 1 && counter == nb_frames)
+        {
+            camera.set(cv::CAP_PROP_POS_FRAMES, 0);
+            counter = 0;
+        }
+
         if (frame.size[0] > 0 && frame.size[1]) {
+          /////////////////////////
+          // VIDEO RENDERING
+          /////////////////////////
+          /* int display_image_height = (int)(frame.rows *
+           * ((double)display_image_width / (double)frame.cols)); */
+          cv::Mat display_frame;
+          cv::resize(frame, display_frame,
+                     cv::Size(display_image_width, display_image_height),
+                     cv::INTER_LINEAR);
+
+          // LOad image into texture
+          GLuint image_texture;
+          LoadImage(display_frame.ptr(), display_image_width,
+                    display_image_height, &image_texture);
+          ImGui::Image((void *)(intptr_t)image_texture,
+                       ImVec2(display_image_width, display_image_height));
+
+          ///////////////////////////////////
+          // INFERENCE
+          ///////////////////////////////////
           auto width = 128;
           auto height = 128;
 
+          // Copy image data to tensor
           cv::Mat scaled_frame;
           cv::resize(frame, scaled_frame, cv::Size(width, height),
                      cv::INTER_LINEAR);
-          GLuint image_texture;
-          LoadImage(scaled_frame.ptr(), height, width, &image_texture);
-          ImGui::Image((void *)(intptr_t)image_texture, ImVec2(width, height));
-
-          // Copy image data to tensor
           size_t image_size = height * width * 3 * sizeof(float);
           cv::Mat preprocessed_frame = cv::Mat(128, 128, CV_32FC3);
           scaled_frame.convertTo(preprocessed_frame, CV_32FC3);
-          input_tensor.CopyFromBytes((void*)(preprocessed_frame.data), image_size);
+          input_tensor.CopyFromBytes((void *)(preprocessed_frame.data),
+                                     image_size);
           set_input("input", input_tensor);
           run();
           get_output(0, output_tensor_1);
           get_output(1, output_tensor_2);
-          auto confidence_values = static_cast<float*>(output_tensor_2->data);
+          auto confidence_values = static_cast<float *>(output_tensor_2->data);
         }
       }
       ImGui::End();
@@ -228,7 +262,6 @@ int main(int, char **) {
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(window);
   }
-
 
   // Cleanup
   ImGui_ImplOpenGL2_Shutdown();
