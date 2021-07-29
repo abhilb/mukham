@@ -14,7 +14,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 
-add_executable(Mukham main.cpp
+add_executable(Mukham src/main.cpp
 		      imgui/imgui.cpp
 		      imgui/imgui_demo.cpp
 		      imgui/imgui_draw.cpp
