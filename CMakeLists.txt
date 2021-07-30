@@ -14,7 +14,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 
-add_executable(Mukham src/main.cpp
+add_executable(${PROJECT_NAME} src/main.cpp
 		      imgui/imgui.cpp
 		      imgui/imgui_demo.cpp
 		      imgui/imgui_draw.cpp
@@ -23,19 +23,20 @@ add_executable(Mukham src/main.cpp
 		      imgui/backends/imgui_impl_sdl.cpp
 		      imgui/backends/imgui_impl_opengl2.cpp)
 
-target_compile_definitions(Mukham PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
-target_include_directories(Mukham PUBLIC "imgui")
-target_include_directories(Mukham PUBLIC "imgui/backends")
-target_include_directories(Mukham PUBLIC "tvm/include")
-target_include_directories(Mukham PUBLIC "dlpack/include")
-target_include_directories(Mukham PUBLIC "dmlc-core/include")
-target_include_directories(Mukham PUBLIC ${SDL2_INCLUDE_DIRS})
-target_include_directories(Mukham PUBLIC ${OPENGL_INCLUDE_DIRS})
-target_include_directories(Mukham PUBLIC ${OpencV_INCLUDE_DIRS})
+target_compile_definitions(${PROJECT_NAME} PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
+target_include_directories(${PROJECT_NAME} PUBLIC "imgui")
+target_include_directories(${PROJECT_NAME} PUBLIC "imgui/backends")
+target_include_directories(${PROJECT_NAME} PUBLIC "tvm/include")
+target_include_directories(${PROJECT_NAME} PUBLIC "dlpack/include")
+target_include_directories(${PROJECT_NAME} PUBLIC "dmlc-core/include")
+target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${OpencV_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/spdlog/include)
 
-target_link_directories(Mukham PUBLIC ${CMAKE_SOURCE_DIR}/tvm/libs)
+target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/tvm/libs)
 
-target_link_libraries(Mukham PUBLIC ${SDL2_LIBRARIES})
-target_link_libraries(Mukham PUBLIC ${OPENGL_LIBRARIES})
-target_link_libraries(Mukham PUBLIC ${OpenCV_LIBS})
-target_link_libraries(Mukham PUBLIC tvm_runtime)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${SDL2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} PUBLIC tvm_runtime)
