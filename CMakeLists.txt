@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 if(NOT CMAKE_BUILD_TYPE)
-    message(STATUS "Setting build type to Relase")
+    message(STATUS "Setting build type to Release")
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
