@@ -1,0 +1,1 @@
+Video source: https://github.com/intel-iot-devkit/sample-videos/blob/master/face-demographics-walking.mp4
