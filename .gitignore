@@ -32,6 +32,7 @@ ipch
 ## Commonly used CMake directories
 /build*/
 /models/
+*/build/
 
 /scripts/.venv
 /scripts/.pkl_memoize_py3
