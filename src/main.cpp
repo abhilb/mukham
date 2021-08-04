@@ -196,6 +196,10 @@ int main(int, char **) {
                         ImGui::GetIO().Framerate);
             ImGui::End();
 
+            ImGui::Begin("Resources");
+
+            ImGui::End();
+
             ImGui::Begin("Video");
             if (record_video) {
                 // Get the video frame
