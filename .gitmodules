@@ -4,3 +4,6 @@
 [submodule "tvm"]
 	path = tvm
 	url = https://github.com/apache/tvm
+[submodule "dlib"]
+	path = dlib
+	url = https://github.com/davisking/dlib.git
