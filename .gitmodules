@@ -7,3 +7,6 @@
 [submodule "dlib"]
 	path = dlib
 	url = https://github.com/davisking/dlib.git
+[submodule "implot"]
+	path = implot
+	url = https://github.com/epezent/implot.git
