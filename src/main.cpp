@@ -3,6 +3,8 @@
 #include <SDL_opengl.h>
 #include <stdio.h>
 
+#include <deque>
+#include <filesystem>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/cvstd.hpp>
 #include <opencv2/imgproc.hpp>
@@ -11,17 +13,32 @@
 #include <string>
 #include <utility>
 
-#include "dlpack/dlpack.h"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
+#include "implot.h"
 #include "spdlog/spdlog.h"
-#include "tvm/runtime/module.h"
-#include "tvm/runtime/ndarray.h"
-#include "tvm/runtime/packed_func.h"
+#include "tvm_blazeface.h"
+#include "tvm_facemesh.h"
 
 unsigned int display_image_width = 512;
 unsigned int display_image_height = 512;
+
+namespace fs = std::filesystem;
+
+struct RollingBuffer {
+    float Span;
+    ImVector<ImVec2> Data;
+    RollingBuffer() {
+        Span = 200.0f;
+        Data.reserve((int)Span);
+    }
+
+    void AddPoint(float x, float y) {
+        if (Data.size() > (int)Span) Data.erase(Data.begin());
+        Data.push_back(ImVec2(x, y));
+    }
+};
 
 void LoadImage(const unsigned char *image_data, const int &height,
                const int &width, GLuint *texture) {
@@ -39,12 +56,37 @@ void LoadImage(const unsigned char *image_data, const int &height,
     *texture = image_texture;
 }
 
+void RenderImage(const cv::Mat &frame, const int &width, const int &height) {
+    cv::Mat display_frame;
+    cv::resize(frame, display_frame, cv::Size(width, height), cv::INTER_LINEAR);
+
+    // LOad image into texture
+    GLuint image_texture;
+    LoadImage(display_frame.ptr(), display_image_width, display_image_height,
+              &image_texture);
+    ImGui::Image((void *)(intptr_t)image_texture,
+                 ImVec2(display_image_width, display_image_height));
+}
+
 int main(int, char **) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
         0) {
         spdlog::error("Error: {}\n", SDL_GetError());
         return -1;
     }
+
+    //
+    RollingBuffer processing_data;
+
+    // Load models
+    auto cwd = fs::current_path();
+    auto model_path = cwd / "face_landmark.so";
+    int batch_size = 5;
+    auto face_mesh_detector =
+        tvm_facemesh::TVM_Facemesh(model_path, batch_size);
+    std::vector<cv::Mat> frames;
+    std::deque<cv::Mat> render_frames;
+    cv::Mat last_frame;
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -65,6 +107,8 @@ int main(int, char **) {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();
+
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
@@ -86,31 +130,6 @@ int main(int, char **) {
     std::string btn_txt{"Start Video"};
     std::string play_btn_txt{"Play"};
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    // TVM related
-    int ndim = 4;
-    int device_type = kDLCPU;
-    int dtype_code = kDLFloat;
-    int dtype_bits = 32;
-    int dtype_lanes = 1;
-    int device_id = 0;
-    int64_t shape[4] = {1, 128, 128, 3};
-
-    DLDevice dev{kDLCPU, 0};
-
-    tvm::runtime::Module mod_factory = tvm::runtime::Module::LoadFromFile(
-        "/home/pi/work/mukham/build/face_detection_short_range.so");
-    tvm::runtime::Module gmod = mod_factory.GetFunction("default")(dev);
-    tvm::runtime::PackedFunc set_input = gmod.GetFunction("set_input");
-    tvm::runtime::PackedFunc get_output = gmod.GetFunction("get_output");
-    tvm::runtime::PackedFunc run = gmod.GetFunction("run");
-
-    auto input_tensor = tvm::runtime::NDArray::Empty(
-        {1, 128, 128, 3}, DLDataType{kDLFloat, 32, 1}, dev);
-    auto output_tensor_1 = tvm::runtime::NDArray::Empty(
-        {1, 896, 16}, DLDataType{kDLFloat, 32, 1}, dev);
-    auto output_tensor_2 = tvm::runtime::NDArray::Empty(
-        {1, 896, 1}, DLDataType{kDLFloat, 32, 1}, dev);
 
     bool is_camera_open = false;
     int prev_video_src = 0;
@@ -170,8 +189,7 @@ int main(int, char **) {
                         btn_txt = std::string{"Start Video"};
                 }
             } else {
-                const cv::String test_video_fname{
-                    "face-demographics-walking.mp4"};
+                const cv::String test_video_fname{"closeup_1.mp4"};
 
                 if (!is_camera_open) {
                     is_camera_open = camera.open(test_video_fname);
@@ -196,69 +214,70 @@ int main(int, char **) {
                         ImGui::GetIO().Framerate);
             ImGui::End();
 
-            ImGui::Begin("Resources");
-
-            ImGui::End();
+            static ImPlotAxisFlags flags = ImPlotAxisFlags_AutoFit;
+            ImPlot::SetNextPlotLimitsX(0, processing_data.Span,
+                                       ImGuiCond_Always);
+            ImPlot::BeginPlot("##Processing Time", NULL, NULL, ImVec2(-1, 150),
+                              0, flags, flags);
+            ImPlot::PlotLine("Processing time", &processing_data.Data[0].x,
+                             &processing_data.Data[0].y,
+                             processing_data.Data.size(), 0, 2 * sizeof(float));
+            ImPlot::EndPlot();
 
             ImGui::Begin("Video");
             if (record_video) {
                 // Get the video frame
 
                 cv::Mat frame;
-                camera >> frame;
+                auto retval = camera.read(frame);
 
-                // Convert the frame to RGB
-                cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-                counter++;
+                if (retval) {
+                    // Convert the frame to RGB
+                    cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+                    counter++;
 
-                // Reset the video
-                if (video_src == 1 && counter == nb_frames) {
-                    camera.set(cv::CAP_PROP_POS_FRAMES, 0);
-                    counter = 0;
+                    // Reset the video
+                    if (video_src == 1 && counter == nb_frames) {
+                        camera.set(cv::CAP_PROP_POS_FRAMES, 0);
+                        counter = 0;
+                    }
+
+                    if (frames.size() == batch_size) {
+                        std::vector<tvm_facemesh::TVM_FacemeshResult> results;
+                        face_mesh_detector.Detect(frames, results);
+
+                        for (int frame_idx = 0; frame_idx < frames.size();
+                             ++frame_idx) {
+                            auto const &result = results[frame_idx];
+                            auto &frame = frames[frame_idx];
+                            processing_data.AddPoint(counter + frame_idx,
+                                                     result.processing_time);
+                            if (result.has_face) {
+                                for (auto &point : result.mesh) {
+                                    cv::circle(frame, point, 3,
+                                               cv::Scalar(0, 255, 0));
+                                }
+                            }
+                            render_frames.push_back(frame);
+                            frame.release();
+                        }
+                        frames.clear();
+                    } else {
+                        frames.push_back(frame);
+                    }
                 }
+            }
 
-                if (frame.size[0] > 0 && frame.size[1]) {
-                    /////////////////////////
-                    // VIDEO RENDERING
-                    /////////////////////////
-                    /* int display_image_height = (int)(frame.rows *
-                     * ((double)display_image_width / (double)frame.cols)); */
-                    cv::Mat display_frame;
-                    cv::resize(
-                        frame, display_frame,
-                        cv::Size(display_image_width, display_image_height),
-                        cv::INTER_LINEAR);
-
-                    // LOad image into texture
-                    GLuint image_texture;
-                    LoadImage(display_frame.ptr(), display_image_width,
-                              display_image_height, &image_texture);
-                    ImGui::Image(
-                        (void *)(intptr_t)image_texture,
-                        ImVec2(display_image_width, display_image_height));
-
-                    ///////////////////////////////////
-                    // INFERENCE
-                    ///////////////////////////////////
-                    auto width = 128;
-                    auto height = 128;
-
-                    // Copy image data to tensor
-                    cv::Mat scaled_frame;
-                    cv::resize(frame, scaled_frame, cv::Size(width, height),
-                               cv::INTER_LINEAR);
-                    size_t image_size = height * width * 3 * sizeof(float);
-                    cv::Mat preprocessed_frame = cv::Mat(128, 128, CV_32FC3);
-                    scaled_frame.convertTo(preprocessed_frame, CV_32FC3);
-                    input_tensor.CopyFromBytes(
-                        (void *)(preprocessed_frame.data), image_size);
-                    set_input("input", input_tensor);
-                    run();
-                    get_output(0, output_tensor_1);
-                    get_output(1, output_tensor_2);
-                    auto confidence_values =
-                        static_cast<float *>(output_tensor_2->data);
-                }
+            if (!render_frames.empty()) {
+                auto render_frame = render_frames.front();
+                RenderImage(render_frame, display_image_width,
+                            display_image_height);
+                last_frame = render_frame;
+                render_frames.pop_front();
+            } else {
+                if (last_frame.rows > 0 && last_frame.cols > 0)
+                    RenderImage(last_frame, display_image_width,
+                                display_image_height);
             }
             ImGui::End();
         }
@@ -277,6 +296,7 @@ int main(int, char **) {
     // Cleanup
     ImGui_ImplOpenGL2_Shutdown();
     ImGui_ImplSDL2_Shutdown();
+    ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     SDL_GL_DeleteContext(gl_context);

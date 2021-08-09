@@ -18,18 +18,23 @@ find_package(OpenCV REQUIRED)
 set(TVM_SRC ${CMAKE_SOURCE_DIR}/tvm)
 
 add_executable(${PROJECT_NAME} src/main.cpp
-		      imgui/imgui.cpp
-		      imgui/imgui_demo.cpp
-		      imgui/imgui_draw.cpp
-		      imgui/imgui_tables.cpp
-		      imgui/imgui_widgets.cpp
-		      imgui/backends/imgui_impl_sdl.cpp
-		      imgui/backends/imgui_impl_opengl2.cpp
-              ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
+    src/tvm_blazeface.cpp
+    src/tvm_facemesh.cpp
+    imgui/imgui.cpp
+    imgui/imgui_demo.cpp
+    imgui/imgui_draw.cpp
+    imgui/imgui_tables.cpp
+    imgui/imgui_widgets.cpp
+    imgui/backends/imgui_impl_sdl.cpp
+    imgui/backends/imgui_impl_opengl2.cpp
+    implot/implot.cpp
+    implot/implot_items.cpp
+    ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui")
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui/backends")
+target_include_directories(${PROJECT_NAME} PUBLIC "implot")
 target_include_directories(${PROJECT_NAME} PUBLIC "tvm/include")
 target_include_directories(${PROJECT_NAME} PUBLIC ${TVM_SRC}/3rdparty/dlpack/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${TVM_SRC}/3rdparty/dmlc-core/include)
@@ -43,3 +48,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_DL_LIBS})
+target_link_libraries(${PROJECT_NAME} PUBLIC "stdc++fs")
