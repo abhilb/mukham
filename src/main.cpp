@@ -3,8 +3,10 @@
 #include <SDL_opengl.h>
 #include <stdio.h>
 
+#include <algorithm>
 #include <deque>
 #include <filesystem>
+#include <numeric>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/cvstd.hpp>
 #include <opencv2/imgproc.hpp>
@@ -27,16 +29,19 @@ unsigned int display_image_height = 512;
 namespace fs = std::filesystem;
 
 struct RollingBuffer {
-    float Span;
-    ImVector<ImVec2> Data;
-    RollingBuffer() {
-        Span = 200.0f;
-        Data.reserve((int)Span);
+    int _history;
+    std::vector<float> y;
+    std::vector<float> x;
+    RollingBuffer(int history) {
+        _history = history;
+        y.reserve(history);
+        x = std::vector<float>(history);
+        std::iota(x.begin(), x.end(), 0);
     }
 
-    void AddPoint(float x, float y) {
-        if (Data.size() > (int)Span) Data.erase(Data.begin());
-        Data.push_back(ImVec2(x, y));
+    void AddPoint(float data) {
+        y.push_back(data);
+        if (y.size() > _history) y.erase(y.begin());
     }
 };
 
@@ -76,7 +81,7 @@ int main(int, char **) {
     }
 
     //
-    RollingBuffer processing_data;
+    RollingBuffer processing_data(100);
 
     // Load models
     auto cwd = fs::current_path();
@@ -214,14 +219,19 @@ int main(int, char **) {
                         ImGui::GetIO().Framerate);
             ImGui::End();
 
-            static ImPlotAxisFlags flags = ImPlotAxisFlags_AutoFit;
-            ImPlot::SetNextPlotLimitsX(0, processing_data.Span,
-                                       ImGuiCond_Always);
-            ImPlot::BeginPlot("##Processing Time", NULL, NULL, ImVec2(-1, 150),
-                              0, flags, flags);
-            ImPlot::PlotLine("Processing time", &processing_data.Data[0].x,
-                             &processing_data.Data[0].y,
-                             processing_data.Data.size(), 0, 2 * sizeof(float));
+            auto x_min = processing_data.x.front();
+            auto x_max = processing_data.x.back();
+            auto y_min = *std::min_element(processing_data.y.begin(),
+                                           processing_data.y.end());
+            auto y_max = *std::max_element(processing_data.y.begin(),
+                                           processing_data.y.end());
+            ImPlot::SetNextPlotLimits(x_min, x_max, y_min - 5, y_max + 5,
+                                      ImGuiCond_Always);
+            ImPlot::BeginPlot("##Processing Time", "Frames", "Time (ms)",
+                              ImVec2(-1, -1));
+            ImPlot::PlotLine("Processing time", processing_data.x.data(),
+                             processing_data.y.data(),
+                             processing_data._history);
             ImPlot::EndPlot();
 
             ImGui::Begin("Video");
@@ -250,13 +260,16 @@ int main(int, char **) {
                              ++frame_idx) {
                             auto const &result = results[frame_idx];
                             auto &frame = frames[frame_idx];
-                            processing_data.AddPoint(counter + frame_idx,
-                                                     result.processing_time);
+                            processing_data.AddPoint(result.processing_time);
                             if (result.has_face) {
                                 for (auto &point : result.mesh) {
                                     cv::circle(frame, point, 3,
                                                cv::Scalar(0, 255, 0));
                                 }
+                            } else {
+                                spdlog::info("{}: No face. face score {}",
+                                             counter + frame_idx,
+                                             result.face_score);
                             }
                             render_frames.push_back(frame);
                             frame.release();
