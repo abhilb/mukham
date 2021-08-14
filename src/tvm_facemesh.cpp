@@ -3,7 +3,10 @@
 
 #include <chrono>
 #include <memory>
+#include <opencv2/core.hpp>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/dnn/dnn.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "spdlog/spdlog.h"
 
@@ -23,21 +26,18 @@ bool TVM_Facemesh::Detect(
     float* input_data = new float[batch_image_size];
 
     auto dest_data_ptr = input_data;
-    for (auto& input_image : input) {
-        cv::Mat scaled_image;
-        cv::Mat preprocessed_image;
-        cv::resize(input_image, scaled_image,
-                   cv::Size(input_width, input_height));
-        scaled_image.convertTo(preprocessed_image, CV_32FC3, 1.0 / 255.0, 0);
-        std::memcpy(input_data, preprocessed_image.data, single_image_size);
-        dest_data_ptr += (preprocessed_image.rows * preprocessed_image.cols);
-        scaled_image.release();
-        preprocessed_image.release();
+
+    std::vector<cv::Mat> batch_images;
+    for (auto& image : input) {
+        cv::Mat scaled_image, preprocessed_image;
+        cv::resize(image, scaled_image, cv::Size(input_width, input_height));
+        scaled_image.convertTo(preprocessed_image, CV_32FC4, 1.0 / 255.0, 0);
+        batch_images.push_back(preprocessed_image);
     }
 
-    // Copy the image to the input tensor of the neural network
-    input_tensor.CopyFromBytes(static_cast<float*>(input_data),
-                               batch_image_size);
+    cv::Mat image_batch;
+    cv::vconcat(batch_images, image_batch);
+    input_tensor.CopyFromBytes(image_batch.data, batch_image_size);
     set_input("input_1", input_tensor);
 
     // Execute the model
@@ -50,10 +50,8 @@ bool TVM_Facemesh::Detect(
     // Postprocessing
     float positions[nr_positions];
     float face_flag[_batch_size * 1];
-
     output_tensor_1.CopyToBytes(&(positions[0]), nr_positions * sizeof(float));
     output_tensor_2.CopyToBytes(&face_flag, _batch_size * sizeof(float));
-
     auto end = std::chrono::steady_clock::now();
     auto processing_time =
         std::chrono::duration_cast<std::chrono::milliseconds>(end - start)

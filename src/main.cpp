@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <deque>
 #include <filesystem>
+#include <memory>
 #include <numeric>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/cvstd.hpp>
@@ -45,33 +46,62 @@ struct RollingBuffer {
     }
 };
 
-void LoadImage(const unsigned char *image_data, const int &height,
-               const int &width, GLuint *texture) {
-    GLuint image_texture;
-    glGenTextures(1, &image_texture);
-    glBindTexture(GL_TEXTURE_2D, image_texture);
+class ImageRenderer {
+   public:
+    ImageRenderer(int width, int height) {
+        assert(width == 0);
+        assert(height == 0);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        _width = width;
+        _height = height;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, image_data);
-    *texture = image_texture;
-}
+        spdlog::info("Image Renderer Init -- START");
 
-void RenderImage(const cv::Mat &frame, const int &width, const int &height) {
-    cv::Mat display_frame;
-    cv::resize(frame, display_frame, cv::Size(width, height), cv::INTER_LINEAR);
+        glGenTextures(1, &_texture);
+        glBindTexture(GL_TEXTURE_2D, _texture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    // LOad image into texture
-    GLuint image_texture;
-    LoadImage(display_frame.ptr(), display_image_width, display_image_height,
-              &image_texture);
-    ImGui::Image((void *)(intptr_t)image_texture,
-                 ImVec2(display_image_width, display_image_height));
-}
+        spdlog::info("Image Renderer Init -- END");
+        cv::Mat _image(_width, _height, CV_8UC3);
+        cv::randu(_image, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 255));
+        spdlog::info("Loaded the dummy image");
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, _image.ptr());
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    void RenderImage() {
+        spdlog::info("Render Image");
+        glBindTexture(GL_TEXTURE_2D, _texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, _image.ptr());
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    void UpdateImage(cv::Mat &image) {
+        if (image.rows != _height || image.cols != _width)
+            cv::resize(image, _image, cv::Size(_width, _height),
+                       cv::INTER_LINEAR);
+        else
+            _image = image.clone();
+    }
+
+    void UpdateAndRender(cv::Mat &image) {
+        UpdateImage(image);
+        RenderImage();
+    }
+
+    GLuint GetTextureId() const { return _texture; }
+
+   private:
+    GLuint _texture;
+    int _height;
+    int _width;
+    cv::Mat _image;
+};
 
 int main(int, char **) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
@@ -80,13 +110,12 @@ int main(int, char **) {
         return -1;
     }
 
-    //
     RollingBuffer processing_data(100);
 
     // Load models
     auto cwd = fs::current_path();
     auto model_path = cwd / "face_landmark.so";
-    int batch_size = 5;
+    int batch_size = 8;
     auto face_mesh_detector =
         tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     std::vector<cv::Mat> frames;
@@ -127,6 +156,10 @@ int main(int, char **) {
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL2_Init();
+
+    // Init the image renderer and display dummy image
+    ImageRenderer img_renderer(display_image_width, display_image_height);
+    img_renderer.RenderImage();
 
     // Our state
     bool record_video = false;
@@ -240,7 +273,6 @@ int main(int, char **) {
 
                 cv::Mat frame;
                 auto retval = camera.read(frame);
-
                 if (retval) {
                     // Convert the frame to RGB
                     cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
@@ -258,12 +290,12 @@ int main(int, char **) {
 
                         for (int frame_idx = 0; frame_idx < frames.size();
                              ++frame_idx) {
+                            auto &image = frames[frame_idx];
                             auto const &result = results[frame_idx];
-                            auto &frame = frames[frame_idx];
                             processing_data.AddPoint(result.processing_time);
                             if (result.has_face) {
                                 for (auto &point : result.mesh) {
-                                    cv::circle(frame, point, 3,
+                                    cv::circle(image, point, 3,
                                                cv::Scalar(0, 255, 0));
                                 }
                             } else {
@@ -271,8 +303,7 @@ int main(int, char **) {
                                              counter + frame_idx,
                                              result.face_score);
                             }
-                            render_frames.push_back(frame);
-                            frame.release();
+                            render_frames.push_back(image);
                         }
                         frames.clear();
                     } else {
@@ -282,16 +313,14 @@ int main(int, char **) {
             }
 
             if (!render_frames.empty()) {
-                auto render_frame = render_frames.front();
-                RenderImage(render_frame, display_image_width,
-                            display_image_height);
-                last_frame = render_frame;
+                spdlog::info("Render frames queue size {}",
+                             render_frames.size());
+                img_renderer.UpdateAndRender(render_frames.front());
                 render_frames.pop_front();
-            } else {
-                if (last_frame.rows > 0 && last_frame.cols > 0)
-                    RenderImage(last_frame, display_image_width,
-                                display_image_height);
             }
+            GLuint texture_id = img_renderer.GetTextureId();
+            ImGui::Image((void *)(intptr_t)(texture_id),
+                         ImVec2(display_image_width, display_image_height));
             ImGui::End();
         }
 
