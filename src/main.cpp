@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include <algorithm>
+#include <chrono>
 #include <deque>
 #include <filesystem>
 #include <memory>
@@ -16,6 +17,7 @@
 #include <string>
 #include <utility>
 
+#include "dlib_face_detection.h"
 #include "imgui.h"
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
@@ -55,8 +57,6 @@ class ImageRenderer {
         _width = width;
         _height = height;
 
-        spdlog::info("Image Renderer Init -- START");
-
         glGenTextures(1, &_texture);
         glBindTexture(GL_TEXTURE_2D, _texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -64,17 +64,16 @@ class ImageRenderer {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        spdlog::info("Image Renderer Init -- END");
-        cv::Mat _image(_width, _height, CV_8UC3);
-        cv::randu(_image, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 255));
-        spdlog::info("Loaded the dummy image");
+        auto dummy_image = cv::imread("noimage.jpg");
+        cv::cvtColor(dummy_image, dummy_image, cv::COLOR_BGR2RGB);
+        cv::resize(dummy_image, _image, cv::Size(_width, _height),
+                   cv::INTER_LINEAR);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB,
                      GL_UNSIGNED_BYTE, _image.ptr());
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void RenderImage() {
-        spdlog::info("Render Image");
         glBindTexture(GL_TEXTURE_2D, _texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB,
                      GL_UNSIGNED_BYTE, _image.ptr());
@@ -121,6 +120,8 @@ int main(int, char **) {
     std::vector<cv::Mat> frames;
     std::deque<cv::Mat> render_frames;
     cv::Mat last_frame;
+
+    auto dlib_dnn_face_detector = dlib_facedetect::DlibFaceDetectDnn();
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -284,37 +285,57 @@ int main(int, char **) {
                         counter = 0;
                     }
 
-                    if (frames.size() == batch_size) {
-                        std::vector<tvm_facemesh::TVM_FacemeshResult> results;
-                        face_mesh_detector.Detect(frames, results);
+                    cv::Mat small_frame;
+                    cv::resize(frame, small_frame, cv::Size(256, 256),
+                               cv::INTER_LINEAR);
 
-                        for (int frame_idx = 0; frame_idx < frames.size();
-                             ++frame_idx) {
-                            auto &image = frames[frame_idx];
-                            auto const &result = results[frame_idx];
-                            processing_data.AddPoint(result.processing_time);
-                            if (result.has_face) {
-                                for (auto &point : result.mesh) {
-                                    cv::circle(image, point, 3,
-                                               cv::Scalar(0, 255, 0));
+                    auto start = std::chrono::steady_clock::now();
+                    std::vector<cv::Rect2d> faces =
+                        dlib_dnn_face_detector.DetectFace(small_frame);
+                    auto end = std::chrono::steady_clock::now();
+                    auto face_detect_duration =
+                        std::chrono::duration_cast<std::chrono::milliseconds>(
+                            end - start)
+                            .count();
+                    spdlog::info("Face detection took: {}",
+                                 face_detect_duration);
+
+                    for (cv::Rect2d &face : faces) {
+                        if (frames.size() == batch_size) {
+                            std::vector<tvm_facemesh::TVM_FacemeshResult>
+                                results;
+                            face_mesh_detector.Detect(frames, results);
+
+                            for (int frame_idx = 0; frame_idx < frames.size();
+                                 ++frame_idx) {
+                                auto &image = frames[frame_idx];
+                                auto const &result = results[frame_idx];
+                                processing_data.AddPoint(
+                                    result.processing_time);
+                                if (result.has_face) {
+                                    for (auto &point : result.mesh) {
+                                        cv::circle(image, point, 3,
+                                                   cv::Scalar(0, 255, 0));
+                                    }
+                                } else {
+                                    spdlog::info("{}: No face. face score {}",
+                                                 counter + frame_idx,
+                                                 result.face_score);
                                 }
-                            } else {
-                                spdlog::info("{}: No face. face score {}",
-                                             counter + frame_idx,
-                                             result.face_score);
+                                render_frames.push_back(image);
                             }
-                            render_frames.push_back(image);
+                            frames.clear();
+                        } else {
+                            auto face_image = small_frame(
+                                cv::Range(face.x, face.x + face.width),
+                                cv::Range(face.y, face.y + face.height));
+                            frames.push_back(face_image);
                         }
-                        frames.clear();
-                    } else {
-                        frames.push_back(frame);
                     }
                 }
             }
 
             if (!render_frames.empty()) {
-                spdlog::info("Render frames queue size {}",
-                             render_frames.size());
                 img_renderer.UpdateAndRender(render_frames.front());
                 render_frames.pop_front();
             }

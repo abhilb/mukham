@@ -17,9 +17,12 @@ find_package(OpenCV REQUIRED)
 
 set(TVM_SRC ${CMAKE_SOURCE_DIR}/tvm)
 
+add_subdirectory(dlib dlib_build)
+
 add_executable(${PROJECT_NAME} src/main.cpp
     src/tvm_blazeface.cpp
     src/tvm_facemesh.cpp
+    src/dlib_face_detection.cpp
     imgui/imgui.cpp
     imgui/imgui_demo.cpp
     imgui/imgui_draw.cpp
@@ -42,6 +45,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${OpencV_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/spdlog/include)
+target_include_directories(${PROJECT_NAME} PUBLIC dlib::dlib)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${SDL2_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES})
@@ -49,3 +53,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_DL_LIBS})
 target_link_libraries(${PROJECT_NAME} PUBLIC "stdc++fs")
+target_link_libraries(${PROJECT_NAME} PUBLIC dlib::dlib)
