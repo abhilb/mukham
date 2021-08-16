@@ -5,8 +5,10 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <deque>
 #include <filesystem>
+#include <limits>
 #include <memory>
 #include <numeric>
 #include <opencv2/core/core.hpp>
@@ -35,6 +37,11 @@ struct RollingBuffer {
     int _history;
     std::vector<float> y;
     std::vector<float> x;
+    float y_min = std::numeric_limits<float>::max();
+    float y_max = std::numeric_limits<float>::min();
+    float x_min = 0;
+    float x_max = 0;
+
     RollingBuffer(int history) {
         _history = history;
         y.reserve(history);
@@ -45,6 +52,10 @@ struct RollingBuffer {
     void AddPoint(float data) {
         y.push_back(data);
         if (y.size() > _history) y.erase(y.begin());
+        x_min = x.front();
+        x_max = x.back();
+        y_min = std::min(y_min, data);
+        y_max = std::max(y_max, data);
     }
 };
 
@@ -72,6 +83,10 @@ class ImageRenderer {
                      GL_UNSIGNED_BYTE, _image.ptr());
         glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+    int GetWidth() const { return _width; }
+
+    int GetHeight() const { return _height; }
 
     void RenderImage() {
         glBindTexture(GL_TEXTURE_2D, _texture);
@@ -110,6 +125,7 @@ int main(int, char **) {
     }
 
     RollingBuffer processing_data(100);
+    RollingBuffer face_detect_time(100);
 
     // Load models
     auto cwd = fs::current_path();
@@ -119,9 +135,11 @@ int main(int, char **) {
         tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     std::vector<cv::Mat> frames;
     std::deque<cv::Mat> render_frames;
+    std::deque<cv::Mat> face_images;
+    std::deque<cv::Mat> face_landmark_images;
     cv::Mat last_frame;
 
-    auto dlib_dnn_face_detector = dlib_facedetect::DlibFaceDetectDnn();
+    auto dlib_dnn_face_detector = dlib_facedetect::DlibFaceDetectHog();
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -161,6 +179,9 @@ int main(int, char **) {
     // Init the image renderer and display dummy image
     ImageRenderer img_renderer(display_image_width, display_image_height);
     img_renderer.RenderImage();
+
+    ImageRenderer face_renderer(64, 64);
+    ImageRenderer landmark_renderer(64, 64);
 
     // Our state
     bool record_video = false;
@@ -228,7 +249,7 @@ int main(int, char **) {
                         btn_txt = std::string{"Start Video"};
                 }
             } else {
-                const cv::String test_video_fname{"closeup_1.mp4"};
+                const cv::String test_video_fname{"demo2.mp4"};
 
                 if (!is_camera_open) {
                     is_camera_open = camera.open(test_video_fname);
@@ -253,20 +274,59 @@ int main(int, char **) {
                         ImGui::GetIO().Framerate);
             ImGui::End();
 
-            auto x_min = processing_data.x.front();
-            auto x_max = processing_data.x.back();
-            auto y_min = *std::min_element(processing_data.y.begin(),
-                                           processing_data.y.end());
-            auto y_max = *std::max_element(processing_data.y.begin(),
-                                           processing_data.y.end());
-            ImPlot::SetNextPlotLimits(x_min, x_max, y_min - 5, y_max + 5,
-                                      ImGuiCond_Always);
-            ImPlot::BeginPlot("##Processing Time", "Frames", "Time (ms)",
-                              ImVec2(-1, -1));
-            ImPlot::PlotLine("Processing time", processing_data.x.data(),
-                             processing_data.y.data(),
-                             processing_data._history);
-            ImPlot::EndPlot();
+            ImGui::Begin("Face mesh processing time");
+            ImPlot::SetNextPlotLimitsX(processing_data.x_min,
+                                       processing_data.x_max, ImGuiCond_Always);
+            ImPlot::SetNextPlotLimitsY(processing_data.y_min - 5,
+                                       processing_data.y_max + 5,
+                                       ImGuiCond_Always);
+            if (ImPlot::BeginPlot("##Processing Time 1", "Frames", "Time (ms)",
+                                  ImVec2(-1, -1))) {
+                // Face mesh processing time plots
+                ImPlot::PlotLine("Facemesh", processing_data.x.data(),
+                                 processing_data.y.data(),
+                                 processing_data._history);
+                ImPlot::EndPlot();
+            }
+            ImGui::End();
+
+            ImGui::Begin("Face detection processing time");
+            ImPlot::SetNextPlotLimitsX(face_detect_time.x_min,
+                                       face_detect_time.x_max,
+                                       ImGuiCond_Always);
+            ImPlot::SetNextPlotLimitsY(face_detect_time.y_min - 5,
+                                       face_detect_time.y_max + 5,
+                                       ImGuiCond_Always);
+            if (ImPlot::BeginPlot("##Processing Time 2", "Frames", "Time (ms)",
+                                  ImVec2(-1, -1))) {
+                // Face detection processing time plots
+                ImPlot::PlotLine("dlib face detect", face_detect_time.x.data(),
+                                 face_detect_time.y.data(),
+                                 face_detect_time._history);
+                ImPlot::EndPlot();
+            }
+            ImGui::End();
+
+            ImGui::Begin("Face");
+            if (!face_images.empty()) {
+                face_renderer.UpdateAndRender(face_images.front());
+                face_images.pop_front();
+                ImGui::Image((void *)(intptr_t)(face_renderer.GetTextureId()),
+                             ImVec2(face_renderer.GetWidth(),
+                                    face_renderer.GetHeight()));
+            }
+            ImGui::End();
+
+            ImGui::Begin("Landmarks");
+            if (!face_landmark_images.empty()) {
+                landmark_renderer.UpdateAndRender(face_landmark_images.front());
+                face_landmark_images.pop_front();
+                ImGui::Image(
+                    (void *)(intptr_t)(landmark_renderer.GetTextureId()),
+                    ImVec2(landmark_renderer.GetWidth(),
+                           landmark_renderer.GetHeight()));
+            }
+            ImGui::End();
 
             ImGui::Begin("Video");
             if (record_video) {
@@ -286,8 +346,9 @@ int main(int, char **) {
                     }
 
                     cv::Mat small_frame;
-                    cv::resize(frame, small_frame, cv::Size(256, 256),
+                    cv::resize(frame, small_frame, cv::Size(0, 0), 0.5, 0.5,
                                cv::INTER_LINEAR);
+                    render_frames.push_back(small_frame);
 
                     auto start = std::chrono::steady_clock::now();
                     std::vector<cv::Rect2d> faces =
@@ -297,8 +358,7 @@ int main(int, char **) {
                         std::chrono::duration_cast<std::chrono::milliseconds>(
                             end - start)
                             .count();
-                    spdlog::info("Face detection took: {}",
-                                 face_detect_duration);
+                    face_detect_time.AddPoint(face_detect_duration);
 
                     for (cv::Rect2d &face : faces) {
                         if (frames.size() == batch_size) {
@@ -314,7 +374,7 @@ int main(int, char **) {
                                     result.processing_time);
                                 if (result.has_face) {
                                     for (auto &point : result.mesh) {
-                                        cv::circle(image, point, 3,
+                                        cv::circle(image, point, 1,
                                                    cv::Scalar(0, 255, 0));
                                     }
                                 } else {
@@ -322,13 +382,21 @@ int main(int, char **) {
                                                  counter + frame_idx,
                                                  result.face_score);
                                 }
-                                render_frames.push_back(image);
+                                face_landmark_images.push_back(image);
                             }
                             frames.clear();
                         } else {
-                            auto face_image = small_frame(
-                                cv::Range(face.x, face.x + face.width),
-                                cv::Range(face.y, face.y + face.height));
+                            auto start_row = std::max<float>(0, face.y - 20);
+                            auto end_row = std::min<float>(
+                                face.y + face.height + 20, small_frame.rows);
+                            auto start_col = std::max<float>(0, face.x - 20);
+                            auto end_col = std::min<float>(
+                                face.x + face.width + 20, small_frame.cols);
+
+                            auto face_image =
+                                small_frame(cv::Range(start_row, end_row),
+                                            cv::Range(start_col, end_col));
+                            face_images.push_back(face_image);
                             frames.push_back(face_image);
                         }
                     }
@@ -339,6 +407,7 @@ int main(int, char **) {
                 img_renderer.UpdateAndRender(render_frames.front());
                 render_frames.pop_front();
             }
+
             GLuint texture_id = img_renderer.GetTextureId();
             ImGui::Image((void *)(intptr_t)(texture_id),
                          ImVec2(display_image_width, display_image_height));

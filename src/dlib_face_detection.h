@@ -3,6 +3,7 @@
 #include <dlib/data_io.h>
 #include <dlib/dnn.h>
 #include <dlib/image_processing.h>
+#include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/opencv.h>
 
 #include <opencv2/core/types.hpp>
@@ -36,6 +37,15 @@ class DlibFaceDetectDnn {
 
    private:
     net_type net;
+};
+
+class DlibFaceDetectHog {
+   public:
+    DlibFaceDetectHog();
+    std::vector<cv::Rect2d> DetectFace(cv::Mat& image);
+
+   private:
+    dlib::frontal_face_detector _detector;
 };
 }  // namespace dlib_facedetect
 
