@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.16)
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to Release")
     set(CMAKE_BUILD_TYPE "Release")
@@ -17,7 +17,12 @@ find_package(OpenCV REQUIRED)
 
 set(TVM_SRC ${CMAKE_SOURCE_DIR}/tvm)
 
-add_subdirectory(dlib dlib_build)
+include(FetchContent)
+FetchContent_Declare(dlib
+    GIT_REPOSITORY https://github.com/davisking/dlib.git
+    GIT_TAG        v19.22
+    )
+FetchContent_MakeAvailable(dlib)
 
 add_executable(${PROJECT_NAME} src/main.cpp
     src/tvm_blazeface.cpp
