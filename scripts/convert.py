@@ -1,3 +1,8 @@
+"""
+Script to convert neural network model to tvm runtime shared object
+"""
+
+import argparse
 from pathlib import Path
 
 # tflite
@@ -34,4 +39,9 @@ def convert(model_name: str) -> None:
 
 
 if __name__ == "__main__":
-    convert("face_detection_short_range.tflite")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', help="The neural network model to be converted",
+                        required=Ture, type=str)
+    parser.add_argument('
+    args = vars(parser.parse_args())
+    convert(args['input'])
