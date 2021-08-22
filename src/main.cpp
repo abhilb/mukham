@@ -24,6 +24,7 @@
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 #include "implot.h"
+#include "opencv_face_detection.h"
 #include "spdlog/spdlog.h"
 #include "tvm_blazeface.h"
 #include "tvm_facemesh.h"
@@ -104,8 +105,10 @@ class ImageRenderer {
     }
 
     void UpdateAndRender(cv::Mat &image) {
-        UpdateImage(image);
-        RenderImage();
+        if (image.rows > 0 && image.cols > 0) {
+            UpdateImage(image);
+            RenderImage();
+        }
     }
 
     GLuint GetTextureId() const { return _texture; }
@@ -139,7 +142,8 @@ int main(int, char **) {
     std::deque<cv::Mat> face_landmark_images;
     cv::Mat last_frame;
 
-    auto dlib_dnn_face_detector = dlib_facedetect::DlibFaceDetectHog();
+    auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
+    auto opencv_lbp_face_detector = opencv_facedetect::OpenCVFaceDetectLBP();
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -180,8 +184,8 @@ int main(int, char **) {
     ImageRenderer img_renderer(display_image_width, display_image_height);
     img_renderer.RenderImage();
 
-    ImageRenderer face_renderer(64, 64);
-    ImageRenderer landmark_renderer(64, 64);
+    ImageRenderer face_renderer(256, 256);
+    ImageRenderer landmark_renderer(256, 256);
 
     // Our state
     bool record_video = false;
@@ -195,6 +199,8 @@ int main(int, char **) {
     int prev_video_src = 0;
     unsigned int nb_frames = 0;
     cv::VideoCapture camera;
+
+    int face_detect_model = 0;
 
     // Main loop
     bool done = false;
@@ -328,6 +334,15 @@ int main(int, char **) {
             }
             ImGui::End();
 
+            ImGui::Begin("Parameters");
+            if (ImGui::CollapsingHeader("Face detection")) {
+                ImGui::RadioButton("Dlib HOG Face detection",
+                                   &face_detect_model, 0);
+                ImGui::RadioButton("OpenCV LBP Face detection",
+                                   &face_detect_model, 1);
+            }
+            ImGui::End();
+
             ImGui::Begin("Video");
             if (record_video) {
                 // Get the video frame
@@ -348,11 +363,24 @@ int main(int, char **) {
                     cv::Mat small_frame;
                     cv::resize(frame, small_frame, cv::Size(0, 0), 0.5, 0.5,
                                cv::INTER_LINEAR);
-                    render_frames.push_back(small_frame);
+                    cv::Mat adjusted_frame;
+                    small_frame.convertTo(adjusted_frame, -1, 2.0, 10);
+                    render_frames.push_back(adjusted_frame);
 
                     auto start = std::chrono::steady_clock::now();
-                    std::vector<cv::Rect2d> faces =
-                        dlib_dnn_face_detector.DetectFace(small_frame);
+                    std::vector<cv::Rect2d> faces;
+
+                    switch (face_detect_model) {
+                        case 0:
+                            faces = dlib_hog_face_detector.DetectFace(
+                                adjusted_frame);
+                            break;
+                        case 1:
+                            faces = opencv_lbp_face_detector.DetectFace(
+                                adjusted_frame);
+                            break;
+                    }
+
                     auto end = std::chrono::steady_clock::now();
                     auto face_detect_duration =
                         std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -374,8 +402,8 @@ int main(int, char **) {
                                     result.processing_time);
                                 if (result.has_face) {
                                     for (auto &point : result.mesh) {
-                                        cv::circle(image, point, 1,
-                                                   cv::Scalar(0, 255, 0));
+                                        cv::circle(image, point, 0,
+                                                   cv::Scalar(0, 255, 0), -1);
                                     }
                                 } else {
                                     spdlog::info("{}: No face. face score {}",

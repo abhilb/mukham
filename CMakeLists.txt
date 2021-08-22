@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME} src/main.cpp
     src/tvm_blazeface.cpp
     src/tvm_facemesh.cpp
     src/dlib_face_detection.cpp
+    src/opencv_face_detection.cpp
     imgui/imgui.cpp
     imgui/imgui_demo.cpp
     imgui/imgui_draw.cpp
