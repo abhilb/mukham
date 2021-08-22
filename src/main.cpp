@@ -202,6 +202,9 @@ int main(int, char **) {
 
     int face_detect_model = 0;
 
+    float alpha = 1.2;
+    float beta = 5;
+
     // Main loop
     bool done = false;
     while (!done) {
@@ -335,6 +338,10 @@ int main(int, char **) {
             ImGui::End();
 
             ImGui::Begin("Parameters");
+            if (ImGui::CollapsingHeader("Preprocessing")) {
+                ImGui::SliderFloat("Alpha", &alpha, 1.0, 5.0);
+                ImGui::SliderFloat("Beta", &beta, 0.0, 50);
+            }
             if (ImGui::CollapsingHeader("Face detection")) {
                 ImGui::RadioButton("Dlib HOG Face detection",
                                    &face_detect_model, 0);
@@ -364,7 +371,10 @@ int main(int, char **) {
                     cv::resize(frame, small_frame, cv::Size(0, 0), 0.5, 0.5,
                                cv::INTER_LINEAR);
                     cv::Mat adjusted_frame;
-                    small_frame.convertTo(adjusted_frame, -1, 2.0, 10);
+
+                    // preprocessing
+                    // increase the brightness
+                    small_frame.convertTo(adjusted_frame, -1, alpha, beta);
                     render_frames.push_back(adjusted_frame);
 
                     auto start = std::chrono::steady_clock::now();
