@@ -33,6 +33,7 @@ ipch
 /build*/
 /models/
 */build/
+*/.ipynb_checkpoints/
 
 /scripts/.venv
 /scripts/.pkl_memoize_py3
