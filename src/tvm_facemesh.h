@@ -29,7 +29,7 @@ class TVM_Facemesh {
         _batch_size = batch_size;
         nr_positions = _batch_size * nr_landmarks;
         try {
-            spdlog::info("Modle: {}", model_path.string());
+            spdlog::info("Model: {}", model_path.string());
             spdlog::info("Model exists: {}", fs::exists(model_path));
             tr::Module mod_factory =
                 tr::Module::LoadFromFile(model_path.string());
