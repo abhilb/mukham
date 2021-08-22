@@ -309,7 +309,7 @@ int main(int, char **) {
             if (ImPlot::BeginPlot("##Processing Time 2", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
                 // Face detection processing time plots
-                ImPlot::PlotLine("dlib face detect", face_detect_time.x.data(),
+                ImPlot::PlotLine("Face Detection", face_detect_time.x.data(),
                                  face_detect_time.y.data(),
                                  face_detect_time._history);
                 ImPlot::EndPlot();
