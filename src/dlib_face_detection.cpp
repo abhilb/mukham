@@ -4,6 +4,7 @@
 #include <tuple>
 
 #include "dlib/image_processing/frontal_face_detector.h"
+#include "dlib/pixel.h"
 
 namespace dlib_facedetect {
 
@@ -29,6 +30,7 @@ std::vector<cv::Rect2d> DlibFaceDetectDnn::DetectFace(cv::Mat& image) {
 
 DlibFaceDetectHog::DlibFaceDetectHog() {
     _detector = dlib::get_frontal_face_detector();
+    deserialize("shape_predictor_68_face_landmarks.dat") >> _predictor;
 }
 
 std::vector<cv::Rect2d> DlibFaceDetectHog::DetectFace(cv::Mat& image) {
@@ -41,6 +43,23 @@ std::vector<cv::Rect2d> DlibFaceDetectHog::DetectFace(cv::Mat& image) {
         result.push_back(cv::Rect2d(d.left(), d.top(), d.width(), d.height()));
     }
 
+    return result;
+}
+
+std::vector<cv::Point2d> DlibFaceDetectHog::DetectLandmarks(
+    cv::Mat& image, cv::Rect2d& bounding_box) {
+    std::vector<cv::Point2d> result;
+
+    dlib::cv_image<dlib::rgb_pixel> dlib_image(image);
+    dlib::matrix<rgb_pixel> dlib_matrix;
+    dlib::assign_image(dlib_matrix, dlib_image);
+
+    dlib::rectangle dlib_rect(
+        dlib::point(bounding_box.x, bounding_box.y),
+        dlib::point(bounding_box.x + bounding_box.width,
+                    bounding_box.y + bounding_box.height));
+
+    auto shape = _predictor(dlib_matrix, dlib_rect);
     return result;
 }
 }  // namespace dlib_facedetect
