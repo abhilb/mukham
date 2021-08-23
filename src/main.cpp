@@ -25,6 +25,7 @@
 #include "imgui_impl_opengl2.h"
 #include "imgui_impl_sdl.h"
 #include "implot.h"
+#include "iou.hpp"
 #include "opencv_face_detection.h"
 #include "spdlog/spdlog.h"
 #include "tvm_blazeface.h"
@@ -212,6 +213,7 @@ int main(int, char **) {
 
     float alpha = 1.2;
     float beta = 5;
+    cv::Rect2d prev_bbox;
 
     // Main loop
     bool done = false;
@@ -457,6 +459,13 @@ int main(int, char **) {
                             }
                             frames.clear();
                         } else {
+                            auto iou = get_iou<double>(face, prev_bbox);
+                            if (iou > 0.9) {
+                                face = prev_bbox;
+                            }
+
+                            prev_bbox = face;
+
                             auto start_row = std::max<float>(0, face.y - 20);
                             auto end_row = std::min<float>(
                                 face.y + face.height + 20, small_frame.rows);
