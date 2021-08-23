@@ -11,6 +11,7 @@
 #include <limits>
 #include <memory>
 #include <numeric>
+#include <opencv2/core.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/cvstd.hpp>
 #include <opencv2/imgproc.hpp>
@@ -120,6 +121,10 @@ class ImageRenderer {
     cv::Mat _image;
 };
 
+std::string get_test_video_name(int video_src) {
+    return video_src == 1 ? std::string{"demo1.mp4"} : std::string{"demo2.mp4"};
+}
+
 int main(int, char **) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
         0) {
@@ -142,6 +147,9 @@ int main(int, char **) {
     std::deque<cv::Mat> face_landmark_images;
     cv::Mat last_frame;
 
+    bool rotate_image = false;
+    int rot_angle = 0;
+
     auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
     auto opencv_lbp_face_detector = opencv_facedetect::OpenCVFaceDetectLBP();
 
@@ -156,7 +164,7 @@ int main(int, char **) {
                           SDL_WINDOW_ALLOW_HIGHDPI);
     SDL_Window *window =
         SDL_CreateWindow("Mukham", SDL_WINDOWPOS_CENTERED,
-                         SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+                         SDL_WINDOWPOS_CENTERED, 1280, 800, window_flags);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(1);  // Enable vsync
@@ -229,8 +237,8 @@ int main(int, char **) {
             ImGui::Begin("Mukham");
 
             ImGui::RadioButton("Camera", &video_src, 0);
-            ImGui::SameLine();
-            ImGui::RadioButton("TestVideo", &video_src, 1);
+            ImGui::RadioButton("Test Video 1", &video_src, 1);
+            ImGui::RadioButton("Test Video 2", &video_src, 2);
 
             if (video_src != prev_video_src) {
                 camera.release();
@@ -258,7 +266,8 @@ int main(int, char **) {
                         btn_txt = std::string{"Start Video"};
                 }
             } else {
-                const cv::String test_video_fname{"demo2.mp4"};
+                auto video_file_name = get_test_video_name(video_src);
+                const cv::String test_video_fname{video_file_name};
 
                 if (!is_camera_open) {
                     is_camera_open = camera.open(test_video_fname);
@@ -273,8 +282,7 @@ int main(int, char **) {
                         play_btn_txt = std::string{"Play"};
                 }
                 ImGui::Text(
-                    "https://github.com/intel-iot-devkit/sample-videos/blob/"
-                    "master/face-demographics-walking.mp4");
+                    "https://github.com/intel-iot-devkit/sample-videos");
             }
 
             ImGui::Text("Frames = %d", counter);
@@ -320,28 +328,37 @@ int main(int, char **) {
             if (!face_images.empty()) {
                 face_renderer.UpdateAndRender(face_images.front());
                 face_images.pop_front();
-                ImGui::Image((void *)(intptr_t)(face_renderer.GetTextureId()),
-                             ImVec2(face_renderer.GetWidth(),
-                                    face_renderer.GetHeight()));
             }
+            ImGui::Image(
+                (void *)(intptr_t)(face_renderer.GetTextureId()),
+                ImVec2(face_renderer.GetWidth(), face_renderer.GetHeight()));
             ImGui::End();
 
             ImGui::Begin("Landmarks");
             if (!face_landmark_images.empty()) {
                 landmark_renderer.UpdateAndRender(face_landmark_images.front());
                 face_landmark_images.pop_front();
-                ImGui::Image(
-                    (void *)(intptr_t)(landmark_renderer.GetTextureId()),
-                    ImVec2(landmark_renderer.GetWidth(),
-                           landmark_renderer.GetHeight()));
             }
+            ImGui::Image((void *)(intptr_t)(landmark_renderer.GetTextureId()),
+                         ImVec2(landmark_renderer.GetWidth(),
+                                landmark_renderer.GetHeight()));
             ImGui::End();
 
             ImGui::Begin("Parameters");
             if (ImGui::CollapsingHeader("Preprocessing")) {
                 ImGui::SliderFloat("Alpha", &alpha, 1.0, 5.0);
                 ImGui::SliderFloat("Beta", &beta, 0.0, 50);
+
+                ImGui::Checkbox("Rotate", &rotate_image);
+                if (rotate_image) {
+                    ImGui::RadioButton("90 deg", &rot_angle, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("180 deg", &rot_angle, 1);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("270 deg", &rot_angle, 2);
+                }
             }
+
             if (ImGui::CollapsingHeader("Face detection")) {
                 ImGui::RadioButton("Dlib HOG Face detection",
                                    &face_detect_model, 0);
@@ -370,6 +387,22 @@ int main(int, char **) {
                     cv::Mat small_frame;
                     cv::resize(frame, small_frame, cv::Size(0, 0), 0.5, 0.5,
                                cv::INTER_LINEAR);
+                    if (rotate_image) {
+                        auto get_rotate_code = [](int x) -> int {
+                            switch (x) {
+                                case 0:
+                                    return cv::ROTATE_90_CLOCKWISE;
+                                case 1:
+                                    return cv::ROTATE_180;
+                                case 2:
+                                    return cv::ROTATE_90_COUNTERCLOCKWISE;
+                                default:
+                                    assert("Invalid rotation");
+                            }
+                        };
+                        auto rotate_code = get_rotate_code(rot_angle);
+                        cv::rotate(small_frame, small_frame, rotate_code);
+                    }
                     cv::Mat adjusted_frame;
 
                     // preprocessing
