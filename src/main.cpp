@@ -147,6 +147,7 @@ int main(int, char **) {
     std::deque<cv::Mat> face_images;
     std::deque<cv::Mat> face_landmark_images;
     cv::Mat last_frame;
+    int padding = 10;
 
     bool rotate_image = false;
     int rot_angle = 0;
@@ -366,6 +367,8 @@ int main(int, char **) {
                                    &face_detect_model, 0);
                 ImGui::RadioButton("OpenCV LBP Face detection",
                                    &face_detect_model, 1);
+                ImGui::Separator();
+                ImGui::SliderInt("Padding", &padding, 0, 100);
             }
             ImGui::End();
 
@@ -466,12 +469,16 @@ int main(int, char **) {
 
                             prev_bbox = face;
 
-                            auto start_row = std::max<float>(0, face.y - 20);
-                            auto end_row = std::min<float>(
-                                face.y + face.height + 20, small_frame.rows);
-                            auto start_col = std::max<float>(0, face.x - 20);
-                            auto end_col = std::min<float>(
-                                face.x + face.width + 20, small_frame.cols);
+                            auto start_row =
+                                std::max<float>(0, face.y - padding);
+                            auto end_row =
+                                std::min<float>(face.y + face.height + padding,
+                                                small_frame.rows);
+                            auto start_col =
+                                std::max<float>(0, face.x - padding);
+                            auto end_col =
+                                std::min<float>(face.x + face.width + padding,
+                                                small_frame.cols);
 
                             auto face_image =
                                 small_frame(cv::Range(start_row, end_row),
