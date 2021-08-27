@@ -158,6 +158,7 @@ int main(int, char **) {
 
     auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
     auto opencv_lbp_face_detector = opencv_facedetect::OpenCVFaceDetectLBP();
+    auto opencv_tf_face_detector = opencv_facedetect::OpenCVFaceDetectTF();
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -371,6 +372,8 @@ int main(int, char **) {
                                    &face_detect_model, 0);
                 ImGui::RadioButton("OpenCV LBP Face detection",
                                    &face_detect_model, 1);
+                ImGui::RadioButton("OpenCV TF Face detection",
+                                   &face_detect_model, 2);
                 ImGui::Separator();
                 ImGui::SliderInt("Padding", &padding, 0, 100);
             }
@@ -430,6 +433,12 @@ int main(int, char **) {
                         case 1:
                             faces = opencv_lbp_face_detector.DetectFace(
                                 adjusted_frame);
+                            break;
+                        case 2:
+                            cv::Mat bgr_frame;
+                            cv::cvtColor(frame, bgr_frame, cv::COLOR_RGB2BGR);
+                            faces =
+                                opencv_tf_face_detector.DetectFace(bgr_frame);
                             break;
                     }
 
