@@ -65,8 +65,8 @@ struct RollingBuffer {
 class ImageRenderer {
    public:
     ImageRenderer(int width, int height) {
-        assert(width == 0);
-        assert(height == 0);
+        //assert(width == 0);
+        //assert(height == 0);
 
         _width = width;
         _height = height;
@@ -138,8 +138,12 @@ int main(int, char **) {
 
     // Load models
     auto cwd = fs::current_path();
+#ifdef _WIN32
+    auto model_path = cwd / "face_landmark.dll";
+#else
     auto model_path = cwd / "face_landmark.so";
-    int batch_size = 8;
+#endif 
+    int batch_size = 5;
     auto face_mesh_detector =
         tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     std::vector<cv::Mat> frames;
