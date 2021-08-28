@@ -123,7 +123,7 @@ class ImageRenderer {
 };
 
 std::string get_test_video_name(int video_src) {
-    return video_src == 1 ? std::string{"demo1.mp4"} : std::string{"demo2.mp4"};
+    return video_src == 1 ? std::string{"head-pose-face-detection-male.mp4"} : std::string{"head-pose-face-detection-female.mp4"};
 }
 
 int main(int, char **) {

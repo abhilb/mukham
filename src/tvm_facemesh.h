@@ -30,23 +30,30 @@ class TVM_Facemesh {
         nr_positions = _batch_size * nr_landmarks;
         try {
             spdlog::info("Model: {}", model_path.string());
-            spdlog::info("Model exists: {}", fs::exists(model_path));
-            tr::Module mod_factory =
-                tr::Module::LoadFromFile(model_path.string());
-            //@todo: Add option to choose the device type
-            DLDevice dev{kDLCPU, 0};
-            gmod = mod_factory.GetFunction("default")(dev);
-            set_input = gmod.GetFunction("set_input");
-            get_output = gmod.GetFunction("get_output");
-            run = gmod.GetFunction("run");
+            if (!fs::exists(model_path))
+            {
+                spdlog::info("Model exists: {}", fs::exists(model_path));
+                can_execute = false;
+            }
+            else
+            {
+                tr::Module mod_factory =
+                    tr::Module::LoadFromFile(model_path.string());
+                //@todo: Add option to choose the device type
+                DLDevice dev{ kDLCPU, 0 };
+                gmod = mod_factory.GetFunction("default")(dev);
+                set_input = gmod.GetFunction("set_input");
+                get_output = gmod.GetFunction("get_output");
+                run = gmod.GetFunction("run");
 
-            input_tensor =
-                tr::NDArray::Empty({batch_size, input_width, input_height, 3},
-                                   DLDataType{kDLFloat, 32, 1}, dev);
-            output_tensor_1 = tr::NDArray::Empty(
-                {batch_size, 1, 1, 1404}, DLDataType{kDLFloat, 32, 1}, dev);
-            output_tensor_2 = tr::NDArray::Empty(
-                {batch_size, 1, 1, 1}, DLDataType{kDLFloat, 32, 1}, dev);
+                input_tensor =
+                    tr::NDArray::Empty({ batch_size, input_width, input_height, 3 },
+                        DLDataType{ kDLFloat, 32, 1 }, dev);
+                output_tensor_1 = tr::NDArray::Empty(
+                    { batch_size, 1, 1, 1404 }, DLDataType{ kDLFloat, 32, 1 }, dev);
+                output_tensor_2 = tr::NDArray::Empty(
+                    { batch_size, 1, 1, 1 }, DLDataType{ kDLFloat, 32, 1 }, dev);
+            }
         } catch (...) {
             spdlog::error("Failed to create FaceMesh model object");
             can_execute = false;

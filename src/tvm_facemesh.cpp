@@ -48,10 +48,10 @@ bool TVM_Facemesh::Detect(
     get_output(1, output_tensor_2);
 
     // Postprocessing
-    float positions[nr_positions];
-    float face_flag[_batch_size * 1];
-    output_tensor_1.CopyToBytes(&(positions[0]), nr_positions * sizeof(float));
-    output_tensor_2.CopyToBytes(&face_flag, _batch_size * sizeof(float));
+    auto positions = std::make_unique<float[]>(nr_positions);
+    auto face_flag = std::make_unique<float[]>(_batch_size * 1);
+    output_tensor_1.CopyToBytes(positions.get(), nr_positions * sizeof(float));
+    output_tensor_2.CopyToBytes(face_flag.get(), _batch_size * sizeof(float));
     auto end = std::chrono::steady_clock::now();
     auto processing_time =
         std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
