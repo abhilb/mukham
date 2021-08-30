@@ -41,6 +41,10 @@ add_executable(${PROJECT_NAME} src/main.cpp
     ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
+if(WIN32)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC TVM_EXPORTS)
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui")
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui/backends")
 target_include_directories(${PROJECT_NAME} PUBLIC "implot")
@@ -58,5 +62,19 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_DL_LIBS})
-target_link_libraries(${PROJECT_NAME} PUBLIC "stdc++fs")
 target_link_libraries(${PROJECT_NAME} PUBLIC dlib::dlib)
+
+if(NOT WIN32)
+target_link_libraries(${PROJECT_NAME} PUBLIC "stdc++fs")
+endif()
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/assets/ $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/models/ $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
