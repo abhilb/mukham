@@ -87,12 +87,26 @@ add_custom_command(
 
 enable_testing()
 
-add_executable(blazeface_test test/blazeface_test.cpp)
+add_executable(blazeface_test 
+    test/blazeface_test.cpp
+    src/tvm_blazeface.cpp
+    ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
+
+target_compile_definitions(blazeface_test PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
+
 target_include_directories(blazeface_test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(blazeface_test PUBLIC ${TVM_SRC}/3rdparty/dlpack/include)
 target_include_directories(blazeface_test PUBLIC ${TVM_SRC}/3rdparty/dmlc-core/include)
 target_include_directories(blazeface_test PUBLIC "tvm/include")
-target_link_libraries(blazeface_test gtest_main)
+target_include_directories(blazeface_test PRIVATE ${CMAKE_SOURCE_DIR}/spdlog/include)
+target_include_directories(blazeface_test PUBLIC ${OpencV_INCLUDE_DIRS})
+
+target_link_libraries(blazeface_test PUBLIC ${CMAKE_DL_LIBS})
+target_link_libraries(blazeface_test PUBLIC gtest_main)
+target_link_libraries(blazeface_test PUBLIC ${OpenCV_LIBS})
+if(NOT WIN32)
+target_link_libraries(blazeface_test PUBLIC "stdc++fs")
+endif()
 
 include(GoogleTest)
 gtest_discover_tests(blazeface_test)
