@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+    cmake_minimum_required(VERSION 3.16)
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to Release")
     set(CMAKE_BUILD_TYPE "Release")
@@ -23,6 +23,13 @@ FetchContent_Declare(dlib
     GIT_TAG        v19.22
     )
 FetchContent_MakeAvailable(dlib)
+
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.11.0
+    )
+FetchContent_MakeAvailable(googletest)
 
 add_executable(${PROJECT_NAME} src/main.cpp
     src/tvm_blazeface.cpp
@@ -78,3 +85,14 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/models/ $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
+enable_testing()
+
+add_executable(blazeface_test test/blazeface_test.cpp)
+target_include_directories(blazeface_test PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(blazeface_test PUBLIC ${TVM_SRC}/3rdparty/dlpack/include)
+target_include_directories(blazeface_test PUBLIC ${TVM_SRC}/3rdparty/dmlc-core/include)
+target_include_directories(blazeface_test PUBLIC "tvm/include")
+target_link_libraries(blazeface_test gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(blazeface_test)
