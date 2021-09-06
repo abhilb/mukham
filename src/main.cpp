@@ -65,8 +65,8 @@ struct RollingBuffer {
 class ImageRenderer {
    public:
     ImageRenderer(int width, int height) {
-        //assert(width == 0);
-        //assert(height == 0);
+        // assert(width == 0);
+        // assert(height == 0);
 
         _width = width;
         _height = height;
@@ -123,10 +123,11 @@ class ImageRenderer {
 };
 
 std::string get_test_video_name(int video_src) {
-    return video_src == 1 ? std::string{"head-pose-face-detection-male.mp4"} : std::string{"head-pose-face-detection-female.mp4"};
+    return video_src == 1 ? std::string{"head-pose-face-detection-male.mp4"}
+                          : std::string{"head-pose-face-detection-female.mp4"};
 }
 
-int main(int, char **) {
+int main(int argc, char **argv) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=
         0) {
         spdlog::error("Error: {}\n", SDL_GetError());
@@ -140,9 +141,13 @@ int main(int, char **) {
     auto cwd = fs::current_path();
 #ifdef _WIN32
     auto model_path = cwd / "face_landmark.dll";
+    auto blazeface_model_path = cwd / "face_detection_short_range.dll";
 #else
-    auto model_path = cwd / "face_landmark.so";
-#endif 
+    auto model_path = cwd / fs::path(std::string("face_landmark.so"));
+    auto blazeface_model_path =
+        cwd / fs::path(std::string("face_detection_short_range.so"));
+#endif
+
     int batch_size = 5;
     auto face_mesh_detector =
         tvm_facemesh::TVM_Facemesh(model_path, batch_size);
@@ -155,10 +160,17 @@ int main(int, char **) {
 
     bool rotate_image = false;
     int rot_angle = 0;
+    bool face_mesh = false;
 
+    spdlog::info("Loading dlib model");
     auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
+    spdlog::info("Loading opencv model");
     auto opencv_lbp_face_detector = opencv_facedetect::OpenCVFaceDetectLBP();
+    spdlog::info("Loading opencv dnn model");
     auto opencv_tf_face_detector = opencv_facedetect::OpenCVFaceDetectTF();
+    spdlog::info("Loading Blazeface model");
+    auto blazeface_face_detector =
+        tvm_blazeface::TVM_Blazeface(blazeface_model_path);
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -332,26 +344,6 @@ int main(int, char **) {
             }
             ImGui::End();
 
-            ImGui::Begin("Face");
-            if (!face_images.empty()) {
-                face_renderer.UpdateAndRender(face_images.front());
-                face_images.pop_front();
-            }
-            ImGui::Image(
-                (void *)(intptr_t)(face_renderer.GetTextureId()),
-                ImVec2(face_renderer.GetWidth(), face_renderer.GetHeight()));
-            ImGui::End();
-
-            ImGui::Begin("Landmarks");
-            if (!face_landmark_images.empty()) {
-                landmark_renderer.UpdateAndRender(face_landmark_images.front());
-                face_landmark_images.pop_front();
-            }
-            ImGui::Image((void *)(intptr_t)(landmark_renderer.GetTextureId()),
-                         ImVec2(landmark_renderer.GetWidth(),
-                                landmark_renderer.GetHeight()));
-            ImGui::End();
-
             ImGui::Begin("Parameters");
             if (ImGui::CollapsingHeader("Preprocessing")) {
                 ImGui::SliderFloat("Alpha", &alpha, 1.0, 5.0);
@@ -374,6 +366,7 @@ int main(int, char **) {
                                    &face_detect_model, 1);
                 ImGui::RadioButton("OpenCV TF Face detection",
                                    &face_detect_model, 2);
+                ImGui::RadioButton("BlazeFace Model", &face_detect_model, 3);
                 ImGui::Separator();
                 ImGui::SliderInt("Padding", &padding, 0, 100);
             }
@@ -409,7 +402,7 @@ int main(int, char **) {
                                 case 2:
                                     return cv::ROTATE_90_COUNTERCLOCKWISE;
                                 default:
-                                    assert("Invalid rotation");
+                                    return cv::ROTATE_90_CLOCKWISE;
                             }
                         };
                         auto rotate_code = get_rotate_code(rot_angle);
@@ -420,11 +413,11 @@ int main(int, char **) {
                     // preprocessing
                     // increase the brightness
                     small_frame.convertTo(adjusted_frame, -1, alpha, beta);
-                    render_frames.push_back(adjusted_frame);
 
                     auto start = std::chrono::steady_clock::now();
                     std::vector<cv::Rect2d> faces;
 
+                    cv::Mat bgr_frame;
                     switch (face_detect_model) {
                         case 0:
                             faces = dlib_hog_face_detector.DetectFace(
@@ -435,10 +428,13 @@ int main(int, char **) {
                                 adjusted_frame);
                             break;
                         case 2:
-                            cv::Mat bgr_frame;
                             cv::cvtColor(frame, bgr_frame, cv::COLOR_RGB2BGR);
                             faces =
                                 opencv_tf_face_detector.DetectFace(bgr_frame);
+                            break;
+                        case 3:
+                            faces = blazeface_face_detector.DetectFace(
+                                adjusted_frame);
                             break;
                     }
 
@@ -449,55 +445,66 @@ int main(int, char **) {
                             .count();
                     face_detect_time.AddPoint(face_detect_duration);
 
-                    for (cv::Rect2d &face : faces) {
-                        if (frames.size() == batch_size) {
-                            std::vector<tvm_facemesh::TVM_FacemeshResult>
-                                results;
-                            face_mesh_detector.Detect(frames, results);
+                    for (const auto &face : faces) {
+                        // Render the bounding box
+                        cv::rectangle(adjusted_frame, face,
+                                      cv::Scalar(255, 0, 0), 2);
+                    }
+                    render_frames.push_back(adjusted_frame);
 
-                            for (int frame_idx = 0; frame_idx < frames.size();
-                                 ++frame_idx) {
-                                auto &image = frames[frame_idx];
-                                auto const &result = results[frame_idx];
-                                processing_data.AddPoint(
-                                    result.processing_time);
-                                if (result.has_face) {
-                                    for (auto &point : result.mesh) {
-                                        cv::circle(image, point, 0,
-                                                   cv::Scalar(0, 255, 0), -1);
+                    if (face_mesh) {
+                        for (cv::Rect2d &face : faces) {
+                            if (frames.size() == batch_size) {
+                                std::vector<tvm_facemesh::TVM_FacemeshResult>
+                                    results;
+                                face_mesh_detector.Detect(frames, results);
+
+                                for (int frame_idx = 0;
+                                     frame_idx < frames.size(); ++frame_idx) {
+                                    auto &image = frames[frame_idx];
+                                    auto const &result = results[frame_idx];
+                                    processing_data.AddPoint(
+                                        result.processing_time);
+                                    if (result.has_face) {
+                                        for (auto &point : result.mesh) {
+                                            cv::circle(image, point, 0,
+                                                       cv::Scalar(0, 255, 0),
+                                                       -1);
+                                        }
+                                    } else {
+                                        spdlog::info(
+                                            "{}: No face. face score {}",
+                                            counter + frame_idx,
+                                            result.face_score);
                                     }
-                                } else {
-                                    spdlog::info("{}: No face. face score {}",
-                                                 counter + frame_idx,
-                                                 result.face_score);
+                                    face_landmark_images.push_back(image);
                                 }
-                                face_landmark_images.push_back(image);
+                                frames.clear();
+                            } else {
+                                auto iou = get_iou<double>(face, prev_bbox);
+                                if (iou > 0.9) {
+                                    face = prev_bbox;
+                                }
+
+                                prev_bbox = face;
+
+                                auto start_row =
+                                    std::max<float>(0, face.y - padding);
+                                auto end_row = std::min<float>(
+                                    face.y + face.height + padding,
+                                    small_frame.rows);
+                                auto start_col =
+                                    std::max<float>(0, face.x - padding);
+                                auto end_col = std::min<float>(
+                                    face.x + face.width + padding,
+                                    small_frame.cols);
+
+                                auto face_image =
+                                    small_frame(cv::Range(start_row, end_row),
+                                                cv::Range(start_col, end_col));
+                                face_images.push_back(face_image);
+                                frames.push_back(face_image);
                             }
-                            frames.clear();
-                        } else {
-                            auto iou = get_iou<double>(face, prev_bbox);
-                            if (iou > 0.9) {
-                                face = prev_bbox;
-                            }
-
-                            prev_bbox = face;
-
-                            auto start_row =
-                                std::max<float>(0, face.y - padding);
-                            auto end_row =
-                                std::min<float>(face.y + face.height + padding,
-                                                small_frame.rows);
-                            auto start_col =
-                                std::max<float>(0, face.x - padding);
-                            auto end_col =
-                                std::min<float>(face.x + face.width + padding,
-                                                small_frame.cols);
-
-                            auto face_image =
-                                small_frame(cv::Range(start_row, end_row),
-                                            cv::Range(start_col, end_col));
-                            face_images.push_back(face_image);
-                            frames.push_back(face_image);
                         }
                     }
                 }
