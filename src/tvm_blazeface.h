@@ -109,6 +109,8 @@ class TVM_Blazeface final {
             } catch (...) {
                 can_execute = false;
             }
+        } else {
+            can_execute = false;
         }
 
         // Set the post processing options
