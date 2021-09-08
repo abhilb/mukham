@@ -48,6 +48,10 @@ struct TensorToBoxesOptions {
     double min_score_thresh;
 };
 
+void PreprocessImage(const cv::Mat& input_image, cv::Mat& output_image,
+                     const cv::Size& output_size, double min_val,
+                     double max_val);
+
 class TVM_Blazeface final {
    public:
     explicit TVM_Blazeface(fs::path& model_path, int batch_size = 1) {
@@ -123,13 +127,16 @@ class TVM_Blazeface final {
 
    private:
     void _get_anchor_boxes();
+
     void _decode_boxes(std::unique_ptr<float[]> raw_boxes,
                        std::unique_ptr<float[]> raw_scores,
                        std::vector<cv::Rect2d>& boxes);
-    void _nms(const std::vector<cv::Rect2d>& boxes,
-              const std::vector<float>& scores,
+
+    void _nms(const std::vector<std::pair<double, cv::Rect2d>> detections,
               std::vector<cv::Rect2d>& output);
-    double _overlap_similarity(cv::Rect2d& box1, cv::Rect2d& box2);
+
+    double _overlap_similarity(const cv::Rect2d& box1, const cv::Rect2d& box2);
+
     cv::Rect2d _get_intesection(const cv::Rect2d& box1, const cv::Rect2d& box2);
 
     int input_width = 128;

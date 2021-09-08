@@ -9,19 +9,28 @@
 
 namespace tvm_blazeface {
 
+void PreprocessImage(const cv::Mat& input_image, cv::Mat& output_image,
+                     const cv::Size& output_size, double min_val,
+                     double max_val) {
+    cv::Mat scaled_image;
+    cv::resize(input_image, scaled_image, output_size);
+    scaled_image.convertTo(output_image, CV_32FC3, (max_val - min_val) / 127.5,
+                           min_val);
+}
+
 std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
     // preprocessing
-    cv::Mat scaled_image, preprocessed_image;
-    cv::resize(input_image, scaled_image,
-               cv::Size(anchor_options.input_size_width,
-                        anchor_options.input_size_height));
-    scaled_image.convertTo(preprocessed_image, CV_32FC3, 1.0 / 255.0, 0);
+    cv::Mat preprocessed_image;
+    PreprocessImage(input_image, preprocessed_image,
+                    cv::Size(anchor_options.input_size_width,
+                             anchor_options.input_size_height),
+                    -1.0, 1.0);
 
     // Set the input
     auto single_image_size =
         preprocessed_image.total() * preprocessed_image.elemSize();
     input_tensor.CopyFromBytes(preprocessed_image.data, single_image_size);
-    set_input("input_1", input_tensor);
+    set_input("input", input_tensor);
 
     // Execute the model
     run();
@@ -31,21 +40,28 @@ std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
     get_output(1, output_tensor_2);
 
     // Get the raw boxes
-    auto output_tensor_1_size = box_options.num_boxes * box_options.num_coords *
-                                batch_size * output_tensor_1.DataType().bytes();
+    auto output_tensor_1_size =
+        box_options.num_boxes * box_options.num_coords * batch_size;
+
     auto raw_boxes = std::make_unique<float[]>(output_tensor_1_size);
-    output_tensor_1.CopyToBytes(raw_boxes.get(), output_tensor_1_size);
+
+    output_tensor_1.CopyToBytes(
+        raw_boxes.get(),
+        output_tensor_1_size * output_tensor_1.DataType().bytes());
 
     // Get the raw scores
-    auto tensor_data_type = output_tensor_2.DataType();
-    auto output_tensor_2_size =
-        box_options.num_boxes * tensor_data_type.bytes();
+    auto output_tensor_2_size = box_options.num_boxes * batch_size;
+
     auto raw_scores = std::make_unique<float[]>(output_tensor_2_size);
-    output_tensor_2.CopyToBytes(raw_scores.get(), output_tensor_2_size);
+
+    output_tensor_2.CopyToBytes(
+        raw_scores.get(),
+        output_tensor_2_size * output_tensor_2.DataType().bytes());
 
     // Convert to boxes
     std::vector<cv::Rect2d> boxes;
     _decode_boxes(std::move(raw_boxes), std::move(raw_scores), boxes);
+
     return boxes;
 }
 
@@ -85,6 +101,7 @@ void TVM_Blazeface::_get_anchor_boxes() {
 void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
                                   std::unique_ptr<float[]> raw_scores,
                                   std::vector<cv::Rect2d>& boxes) {
+    std::vector<std::pair<double, cv::Rect2d>> detections;
     for (int i = 0; i < num_boxes; ++i) {
         auto score = raw_scores[i];
         if (box_options.sigmoid_score) {
@@ -102,6 +119,12 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
         float x_center = raw_boxes[box_offset + 1];
         float h = raw_boxes[box_offset + 2];
         float w = raw_boxes[box_offset + 3];
+
+        x_center = (x_center / box_options.x_scale) + anchors[i].first;
+        y_center = (y_center / box_options.y_scale) + anchors[i].second;
+        w = w / box_options.x_scale;
+        h = h / box_options.y_scale;
+
         if (box_options.reverse_output_order) {
             std::swap(x_center, y_center);
             std::swap(h, w);
@@ -111,18 +134,52 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
 
         const float left = x_center - w / 2.f;
         const float top = y_center - h / 2.f;
-        boxes.push_back(cv::Rect2d(left, top, w, h));
+        detections.push_back(
+            std::make_pair(score, cv::Rect2d(left, top, w, h)));
     }
-    spdlog::info("Number of boxes: {}", boxes.size());
+
+    std::sort(detections.begin(), detections.end(),
+              [](auto a, auto b) { return a.first < b.first; });
+
+    _nms(detections, boxes);
 }
 
-void TVM_Blazeface::_nms(const std::vector<cv::Rect2d>& boxes,
-                         const std::vector<float>& scores,
-                         std::vector<cv::Rect2d>& output) {
+void TVM_Blazeface::_nms(
+    const std::vector<std::pair<double, cv::Rect2d>> detections,
+    std::vector<cv::Rect2d>& output) {
     const double min_supression_threshold = 0.3;
+
+    std::vector<cv::Rect2d> kept_boxes;
+    bool supressed = false;
+
+    for (const auto& [score, box] : detections) {
+        if (score < box_options.min_score_thresh) {
+            break;
+        }
+
+        supressed = false;
+        for (const auto& kept : kept_boxes) {
+            auto similarity = _overlap_similarity(kept, box);
+            if (similarity > min_supression_threshold) {
+                supressed = true;
+                break;
+            }
+        }
+
+        if (!supressed) {
+            kept_boxes.push_back(box);
+            auto scaled_box = cv::Rect2d(box.x * box_options.x_scale,
+                                         box.y * box_options.y_scale,
+                                         box.width * box_options.x_scale,
+                                         box.height * box_options.y_scale);
+            output.push_back(scaled_box);
+        }
+    }
+    spdlog::info("Number of boxes: {}", output.size());
 }
 
-double TVM_Blazeface::_overlap_similarity(cv::Rect2d& box1, cv::Rect2d& box2) {
+double TVM_Blazeface::_overlap_similarity(const cv::Rect2d& box1,
+                                          const cv::Rect2d& box2) {
     auto intersection = _get_intesection(box1, box2);
     if (intersection.empty()) return 0.0;
 
