@@ -85,6 +85,25 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/models/ $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
+add_executable(debug_blazeface  debug_blazeface.cpp
+                                src/tvm_blazeface.cpp
+                                ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
+target_compile_definitions(debug_blazeface PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
+target_include_directories(debug_blazeface PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(debug_blazeface PUBLIC ${TVM_SRC}/3rdparty/dlpack/include)
+target_include_directories(debug_blazeface PUBLIC ${TVM_SRC}/3rdparty/dmlc-core/include)
+target_include_directories(debug_blazeface PUBLIC "tvm/include")
+target_include_directories(debug_blazeface PRIVATE ${CMAKE_SOURCE_DIR}/spdlog/include)
+target_include_directories(debug_blazeface PUBLIC ${OpencV_INCLUDE_DIRS})
+target_include_directories(debug_blazeface PUBLIC "src")
+target_include_directories(debug_blazeface PRIVATE ${CMAKE_SOURCE_DIR}/spdlog/include)
+target_link_libraries(debug_blazeface PUBLIC Threads::Threads)
+target_link_libraries(debug_blazeface PUBLIC ${CMAKE_DL_LIBS})
+target_link_libraries(debug_blazeface PUBLIC ${OpenCV_LIBS})
+if(NOT WIN32)
+target_link_libraries(debug_blazeface PUBLIC "stdc++fs")
+endif()
+
 enable_testing()
 
 add_executable(blazeface_test 
