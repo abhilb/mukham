@@ -31,7 +31,7 @@
 #include "tvm_blazeface.h"
 #include "tvm_facemesh.h"
 
-unsigned int display_image_width = 512;
+const unsigned int display_image_width = 512;
 unsigned int display_image_height = 512;
 
 namespace fs = std::filesystem;
@@ -78,7 +78,7 @@ class ImageRenderer {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        auto dummy_image = cv::imread("noimage.jpg");
+        auto dummy_image = cv::imread(std::string("assets/noimage.jpg"));
         cv::cvtColor(dummy_image, dummy_image, cv::COLOR_BGR2RGB);
         cv::resize(dummy_image, _image, cv::Size(_width, _height),
                    cv::INTER_LINEAR);
@@ -123,8 +123,9 @@ class ImageRenderer {
 };
 
 std::string get_test_video_name(int video_src) {
-    return video_src == 1 ? std::string{"head-pose-face-detection-male.mp4"}
-                          : std::string{"head-pose-face-detection-female.mp4"};
+    return video_src == 1
+               ? std::string{"assets/head-pose-face-detection-male.mp4"}
+               : std::string{"assets/head-pose-face-detection-female.mp4"};
 }
 
 int main(int argc, char **argv) {
@@ -140,12 +141,15 @@ int main(int argc, char **argv) {
     // Load models
     auto cwd = fs::current_path();
 #ifdef _WIN32
-    auto model_path = cwd / "face_landmark.dll";
-    auto blazeface_model_path = cwd / "face_detection_short_range.dll";
-#else
-    auto model_path = cwd / fs::path(std::string("face_landmark.so"));
+    auto model_path = cwd / "models/facemesh/face_landmark.dll";
     auto blazeface_model_path =
-        cwd / fs::path(std::string("face_detection_short_range.so"));
+        cwd / "models/blazeface/face_detection_short_range.dll";
+#else
+    auto model_path =
+        cwd / fs::path(std::string("models/facemesh/face_landmark.so"));
+    auto blazeface_model_path =
+        cwd /
+        fs::path(std::string("models/blazeface/face_detection_short_range.so"));
 #endif
 
     int batch_size = 5;
@@ -161,6 +165,8 @@ int main(int argc, char **argv) {
     bool rotate_image = false;
     int rot_angle = 0;
     bool face_mesh = false;
+    float roi_scale = 1.0;
+    int landmark_model_choice = 0;
 
     spdlog::info("Loading dlib model");
     auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
@@ -200,8 +206,8 @@ int main(int argc, char **argv) {
     // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    // ImGui::StyleColorsDark();
-    ImGui::StyleColorsClassic();
+    ImGui::StyleColorsDark();
+    // ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
@@ -215,22 +221,21 @@ int main(int argc, char **argv) {
     ImageRenderer landmark_renderer(256, 256);
 
     // Our state
-    bool record_video = false;
-    bool play_video = false;
-    int video_src = 0;
     std::string btn_txt{"Start Video"};
     std::string play_btn_txt{"Play"};
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    bool record_video = false;
+    bool play_video = false;
     bool is_camera_open = false;
+    int face_detect_model = 0;
+    int video_src = 0;
     int prev_video_src = 0;
     unsigned int nb_frames = 0;
-    cv::VideoCapture camera;
-
-    int face_detect_model = 0;
-
     float alpha = 1.2;
     float beta = 5;
+
+    cv::VideoCapture camera;
     cv::Rect2d prev_bbox;
 
     // Main loop
@@ -370,6 +375,15 @@ int main(int argc, char **argv) {
                 ImGui::Separator();
                 ImGui::SliderInt("Padding", &padding, 0, 100);
             }
+
+            if (ImGui::CollapsingHeader("Landmark detection")) {
+                ImGui::RadioButton("Dlib landmarks model",
+                                   &landmark_model_choice, 0);
+                ImGui::RadioButton("Facemeh model", &landmark_model_choice, 1);
+                ImGui::Separator();
+                ImGui::SliderFloat("ROI scale", &roi_scale, 1.0, 3.0, "%.1f");
+            }
+
             ImGui::End();
 
             ImGui::Begin("Video");
