@@ -1,367 +1,422 @@
 [
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/main.cpp.o -c /home/pi/work/mukham/src/main.cpp",
-  "file": "/home/pi/work/mukham/src/main.cpp"
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/debug_blazeface.dir/debug_blazeface.cpp.o -c /home/pi/work/mukham/debug_blazeface.cpp",
+  "file": "/home/pi/work/mukham/debug_blazeface.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/tvm_blazeface.cpp.o -c /home/pi/work/mukham/src/tvm_blazeface.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/debug_blazeface.dir/src/tvm_blazeface.cpp.o -c /home/pi/work/mukham/src/tvm_blazeface.cpp",
   "file": "/home/pi/work/mukham/src/tvm_blazeface.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/tvm_facemesh.cpp.o -c /home/pi/work/mukham/src/tvm_facemesh.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/debug_blazeface.dir/tvm/apps/howto_deploy/tvm_runtime_pack.cc.o -c /home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc",
+  "file": "/home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/blazeface_test.dir/test/blazeface_test.cpp.o -c /home/pi/work/mukham/test/blazeface_test.cpp",
+  "file": "/home/pi/work/mukham/test/blazeface_test.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/blazeface_test.dir/src/tvm_blazeface.cpp.o -c /home/pi/work/mukham/src/tvm_blazeface.cpp",
+  "file": "/home/pi/work/mukham/src/tvm_blazeface.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/src -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/spdlog/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/blazeface_test.dir/tvm/apps/howto_deploy/tvm_runtime_pack.cc.o -c /home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc",
+  "file": "/home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/main.cpp.o -c /home/pi/work/mukham/src/main.cpp",
+  "file": "/home/pi/work/mukham/src/main.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/tvm_blazeface.cpp.o -c /home/pi/work/mukham/src/tvm_blazeface.cpp",
+  "file": "/home/pi/work/mukham/src/tvm_blazeface.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/tvm_facemesh.cpp.o -c /home/pi/work/mukham/src/tvm_facemesh.cpp",
   "file": "/home/pi/work/mukham/src/tvm_facemesh.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/dlib_face_detection.cpp.o -c /home/pi/work/mukham/src/dlib_face_detection.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/dlib_face_detection.cpp.o -c /home/pi/work/mukham/src/dlib_face_detection.cpp",
   "file": "/home/pi/work/mukham/src/dlib_face_detection.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui.cpp.o -c /home/pi/work/mukham/imgui/imgui.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/src/opencv_face_detection.cpp.o -c /home/pi/work/mukham/src/opencv_face_detection.cpp",
+  "file": "/home/pi/work/mukham/src/opencv_face_detection.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui.cpp.o -c /home/pi/work/mukham/imgui/imgui.cpp",
   "file": "/home/pi/work/mukham/imgui/imgui.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_demo.cpp.o -c /home/pi/work/mukham/imgui/imgui_demo.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_demo.cpp.o -c /home/pi/work/mukham/imgui/imgui_demo.cpp",
   "file": "/home/pi/work/mukham/imgui/imgui_demo.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_draw.cpp.o -c /home/pi/work/mukham/imgui/imgui_draw.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_draw.cpp.o -c /home/pi/work/mukham/imgui/imgui_draw.cpp",
   "file": "/home/pi/work/mukham/imgui/imgui_draw.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_tables.cpp.o -c /home/pi/work/mukham/imgui/imgui_tables.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_tables.cpp.o -c /home/pi/work/mukham/imgui/imgui_tables.cpp",
   "file": "/home/pi/work/mukham/imgui/imgui_tables.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_widgets.cpp.o -c /home/pi/work/mukham/imgui/imgui_widgets.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/imgui_widgets.cpp.o -c /home/pi/work/mukham/imgui/imgui_widgets.cpp",
   "file": "/home/pi/work/mukham/imgui/imgui_widgets.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_sdl.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_sdl.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_sdl.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_sdl.cpp",
   "file": "/home/pi/work/mukham/imgui/backends/imgui_impl_sdl.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_opengl2.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_opengl2.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/imgui/backends/imgui_impl_opengl2.cpp.o -c /home/pi/work/mukham/imgui/backends/imgui_impl_opengl2.cpp",
   "file": "/home/pi/work/mukham/imgui/backends/imgui_impl_opengl2.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/implot/implot.cpp.o -c /home/pi/work/mukham/implot/implot.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/implot/implot.cpp.o -c /home/pi/work/mukham/implot/implot.cpp",
   "file": "/home/pi/work/mukham/implot/implot.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/implot/implot_items.cpp.o -c /home/pi/work/mukham/implot/implot_items.cpp",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/implot/implot_items.cpp.o -c /home/pi/work/mukham/implot/implot_items.cpp",
   "file": "/home/pi/work/mukham/implot/implot_items.cpp"
 },
 {
   "directory": "/home/pi/work/mukham/build",
-  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/dlib/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/tvm/apps/howto_deploy/tvm_runtime_pack.cc.o -c /home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc",
+  "command": "/usr/local/clang_12.0.0/bin/clang++  -DDMLC_USE_LOGGING_LIBRARY=\"<tvm/runtime/logging.h>\" -I/home/pi/work/mukham/imgui -I/home/pi/work/mukham/imgui/backends -I/home/pi/work/mukham/implot -I/home/pi/work/mukham/tvm/include -I/home/pi/work/mukham/tvm/3rdparty/dlpack/include -I/home/pi/work/mukham/tvm/3rdparty/dmlc-core/include -I/usr/include/SDL2 -I/home/pi/work/mukham/spdlog/include -I/home/pi/work/mukham/dlib::dlib -I/home/pi/work/mukham/build/_deps/dlib-src/dlib/..  -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/Mukham.dir/tvm/apps/howto_deploy/tvm_runtime_pack.cc.o -c /home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc",
   "file": "/home/pi/work/mukham/tvm/apps/howto_deploy/tvm_runtime_pack.cc"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/base64/base64_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/base64/base64_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/base64/base64_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/base64/base64_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/base64/base64_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/base64/base64_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bigint/bigint_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/bigint/bigint_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/bigint/bigint_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bigint/bigint_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/bigint/bigint_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/bigint/bigint_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bigint/bigint_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/bigint/bigint_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/bigint/bigint_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bigint/bigint_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/bigint/bigint_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/bigint/bigint_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bit_stream/bit_stream_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/bit_stream/bit_stream_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/bit_stream/bit_stream_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bit_stream/bit_stream_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/bit_stream/bit_stream_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/bit_stream/bit_stream_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/entropy_decoder/entropy_decoder_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/entropy_decoder/entropy_decoder_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_decoder/entropy_decoder_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_decoder/entropy_decoder_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/entropy_decoder/entropy_decoder_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/entropy_decoder/entropy_decoder_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_decoder/entropy_decoder_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_decoder/entropy_decoder_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_decoder/entropy_decoder_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/entropy_encoder/entropy_encoder_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/entropy_encoder/entropy_encoder_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_encoder/entropy_encoder_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_encoder/entropy_encoder_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/entropy_encoder/entropy_encoder_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/entropy_encoder/entropy_encoder_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/entropy_encoder/entropy_encoder_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_encoder/entropy_encoder_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/entropy_encoder/entropy_encoder_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/md5/md5_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/md5/md5_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/md5/md5_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/fonts.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/fonts.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/fonts.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/tokenizer/tokenizer_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/tokenizer/tokenizer_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/tokenizer/tokenizer_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/md5/md5_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/md5/md5_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/md5/md5_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/unicode/unicode.cpp.o -c /home/pi/work/mukham/dlib/dlib/unicode/unicode.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/unicode/unicode.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/tokenizer/tokenizer_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/tokenizer/tokenizer_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/tokenizer/tokenizer_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/test_for_odr_violations.cpp.o -c /home/pi/work/mukham/dlib/dlib/test_for_odr_violations.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/test_for_odr_violations.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/unicode/unicode.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/unicode/unicode.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/unicode/unicode.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/sockets/sockets_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/sockets/sockets_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/test_for_odr_violations.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/test_for_odr_violations.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/test_for_odr_violations.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bsp/bsp.cpp.o -c /home/pi/work/mukham/dlib/dlib/bsp/bsp.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/bsp/bsp.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/bsp/bsp.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/bsp/bsp.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/bsp/bsp.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_extensions.cpp.o -c /home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_extensions.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/dir_nav/dir_nav_extensions.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/fonts.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/fonts.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/fonts.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/dir_nav/dir_nav_extensions.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_extensions.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/dir_nav/dir_nav_extensions.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/linker/linker_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/linker/linker_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/linker/linker_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/linker/linker_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/linker/linker_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/linker/linker_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/extra_logger_headers.cpp.o -c /home/pi/work/mukham/dlib/dlib/logger/extra_logger_headers.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/logger/extra_logger_headers.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/extra_logger_headers.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/extra_logger_headers.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/extra_logger_headers.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/logger_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/logger/logger_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/logger/logger_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/logger_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/logger_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/logger_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/logger_config_file.cpp.o -c /home/pi/work/mukham/dlib/dlib/logger/logger_config_file.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/logger/logger_config_file.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/logger/logger_config_file.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/logger_config_file.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/logger/logger_config_file.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/misc_api/misc_api_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/misc_api/misc_api_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/misc_api/misc_api_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/misc_api/misc_api_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/misc_api/misc_api_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/misc_api/misc_api_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/misc_api/misc_api_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/misc_api/misc_api_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/misc_api/misc_api_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/misc_api/misc_api_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/misc_api/misc_api_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/misc_api/misc_api_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_extensions.cpp.o -c /home/pi/work/mukham/dlib/dlib/sockets/sockets_extensions.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/sockets/sockets_extensions.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_extensions.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_extensions.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_extensions.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/sockets/sockets_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/sockets/sockets_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockets/sockets_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/sockets/sockets_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf.cpp.o -c /home/pi/work/mukham/dlib/dlib/sockstreambuf/sockstreambuf.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/sockstreambuf/sockstreambuf.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/sockstreambuf/sockstreambuf.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/sockstreambuf/sockstreambuf.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf_unbuffered.cpp.o -c /home/pi/work/mukham/dlib/dlib/sockstreambuf/sockstreambuf_unbuffered.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/sockstreambuf/sockstreambuf_unbuffered.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/sockstreambuf/sockstreambuf_unbuffered.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/sockstreambuf/sockstreambuf_unbuffered.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/sockstreambuf/sockstreambuf_unbuffered.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_kernel.cpp.o -c /home/pi/work/mukham/dlib/dlib/server/server_kernel.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/server/server_kernel.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_kernel.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_kernel.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_kernel.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_iostream.cpp.o -c /home/pi/work/mukham/dlib/dlib/server/server_iostream.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/server/server_iostream.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_iostream.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_iostream.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_iostream.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_http.cpp.o -c /home/pi/work/mukham/dlib/dlib/server/server_http.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/server/server_http.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/server/server_http.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_http.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/server/server_http.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/multithreaded_object_extension.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/multithreaded_object_extension.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/multithreaded_object_extension.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/multithreaded_object_extension.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/multithreaded_object_extension.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/multithreaded_object_extension.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threaded_object_extension.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/threaded_object_extension.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/threaded_object_extension.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threaded_object_extension.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threaded_object_extension.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threaded_object_extension.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/threads_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/threads_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/threads_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/threads_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_shared.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/threads_kernel_shared.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/threads_kernel_shared.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/threads_kernel_shared.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_shared.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/threads_kernel_shared.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/thread_pool_extension.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/thread_pool_extension.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/thread_pool_extension.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/thread_pool_extension.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/thread_pool_extension.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/thread_pool_extension.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/async.cpp.o -c /home/pi/work/mukham/dlib/dlib/threads/async.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/threads/async.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/threads/async.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/async.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/threads/async.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/timer/timer.cpp.o -c /home/pi/work/mukham/dlib/dlib/timer/timer.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/timer/timer.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/timer/timer.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/timer/timer.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/timer/timer.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/stack_trace.cpp.o -c /home/pi/work/mukham/dlib/dlib/stack_trace.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/stack_trace.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/stack_trace.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/stack_trace.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/stack_trace.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/cuda/cpu_dlib.cpp.o -c /home/pi/work/mukham/dlib/dlib/cuda/cpu_dlib.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/cuda/cpu_dlib.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/cuda/cpu_dlib.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/cuda/cpu_dlib.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/cuda/cpu_dlib.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/cuda/tensor_tools.cpp.o -c /home/pi/work/mukham/dlib/dlib/cuda/tensor_tools.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/cuda/tensor_tools.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/cuda/tensor_tools.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/cuda/tensor_tools.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/cuda/tensor_tools.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/image_dataset_metadata.cpp.o -c /home/pi/work/mukham/dlib/dlib/data_io/image_dataset_metadata.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/data_io/image_dataset_metadata.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/image_dataset_metadata.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/image_dataset_metadata.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/image_dataset_metadata.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/mnist.cpp.o -c /home/pi/work/mukham/dlib/dlib/data_io/mnist.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/data_io/mnist.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/mnist.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/mnist.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/mnist.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/cifar.cpp.o -c /home/pi/work/mukham/dlib/dlib/data_io/cifar.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/data_io/cifar.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/data_io/cifar.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/cifar.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/data_io/cifar.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/global_optimization/global_function_search.cpp.o -c /home/pi/work/mukham/dlib/dlib/global_optimization/global_function_search.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/global_optimization/global_function_search.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/global_optimization/global_function_search.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/global_optimization/global_function_search.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/global_optimization/global_function_search.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/filtering/kalman_filter.cpp.o -c /home/pi/work/mukham/dlib/dlib/filtering/kalman_filter.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/filtering/kalman_filter.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/filtering/kalman_filter.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/filtering/kalman_filter.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/filtering/kalman_filter.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/svm/auto.cpp.o -c /home/pi/work/mukham/dlib/dlib/svm/auto.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/svm/auto.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/svm/auto.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/svm/auto.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/svm/auto.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/widgets.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/widgets.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/widgets.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/widgets.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/widgets.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/widgets.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/drawable.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/drawable.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/drawable.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/drawable.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/drawable.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/drawable.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/canvas_drawing.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/canvas_drawing.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/canvas_drawing.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/canvas_drawing.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/canvas_drawing.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/canvas_drawing.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/style.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/style.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/style.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/style.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/style.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/style.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/base_widgets.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_widgets/base_widgets.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_widgets/base_widgets.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_widgets/base_widgets.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/base_widgets.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_widgets/base_widgets.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_core/gui_core_kernel_1.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_core/gui_core_kernel_1.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_core/gui_core_kernel_1.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_core/gui_core_kernel_1.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_core/gui_core_kernel_1.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_core/gui_core_kernel_1.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_core/gui_core_kernel_2.cpp.o -c /home/pi/work/mukham/dlib/dlib/gui_core/gui_core_kernel_2.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/gui_core/gui_core_kernel_2.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/gui_core/gui_core_kernel_2.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_core/gui_core_kernel_2.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/gui_core/gui_core_kernel_2.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_loader/png_loader.cpp.o -c /home/pi/work/mukham/dlib/dlib/image_loader/png_loader.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/image_loader/png_loader.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_loader/png_loader.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/image_loader/png_loader.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/image_loader/png_loader.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_saver/save_png.cpp.o -c /home/pi/work/mukham/dlib/dlib/image_saver/save_png.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/image_saver/save_png.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_saver/save_png.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/image_saver/save_png.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/image_saver/save_png.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_loader/jpeg_loader.cpp.o -c /home/pi/work/mukham/dlib/dlib/image_loader/jpeg_loader.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/image_loader/jpeg_loader.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_loader/jpeg_loader.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/image_loader/jpeg_loader.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/image_loader/jpeg_loader.cpp"
 },
 {
-  "directory": "/home/pi/work/mukham/build/dlib_build/dlib",
-  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_saver/save_jpeg.cpp.o -c /home/pi/work/mukham/dlib/dlib/image_saver/save_jpeg.cpp",
-  "file": "/home/pi/work/mukham/dlib/dlib/image_saver/save_jpeg.cpp"
+  "directory": "/home/pi/work/mukham/build/_deps/dlib-build/dlib",
+  "command": "/usr/local/clang_12.0.0/bin/clang++    -O3 -DNDEBUG   -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DLAPACK_FORCE_UNDERSCORE -ftemplate-depth=500 -std=gnu++17 -o CMakeFiles/dlib.dir/image_saver/save_jpeg.cpp.o -c /home/pi/work/mukham/build/_deps/dlib-src/dlib/image_saver/save_jpeg.cpp",
+  "file": "/home/pi/work/mukham/build/_deps/dlib-src/dlib/image_saver/save_jpeg.cpp"
+},
+{
+  "directory": "/home/pi/work/mukham/build/_deps/googletest-build/googlemock",
+  "command": "/usr/local/clang_12.0.0/bin/clang++   -isystem /home/pi/work/mukham/build/_deps/googletest-src/googlemock/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googlemock -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -Wall -Wshadow -Werror -Wconversion -DGTEST_HAS_PTHREAD=1 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -std=c++17 -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /home/pi/work/mukham/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "file": "/home/pi/work/mukham/build/_deps/googletest-src/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "/home/pi/work/mukham/build/_deps/googletest-build/googlemock",
+  "command": "/usr/local/clang_12.0.0/bin/clang++   -I/home/pi/work/mukham/build/_deps/googletest-src/googlemock/include -I/home/pi/work/mukham/build/_deps/googletest-src/googlemock -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -Wall -Wshadow -Werror -Wconversion -DGTEST_HAS_PTHREAD=1 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -std=c++17 -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /home/pi/work/mukham/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "file": "/home/pi/work/mukham/build/_deps/googletest-src/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/pi/work/mukham/build/_deps/googletest-build/googletest",
+  "command": "/usr/local/clang_12.0.0/bin/clang++   -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest/include -isystem /home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -Wall -Wshadow -Werror -Wconversion -DGTEST_HAS_PTHREAD=1 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -std=c++17 -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /home/pi/work/mukham/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "file": "/home/pi/work/mukham/build/_deps/googletest-src/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "/home/pi/work/mukham/build/_deps/googletest-build/googletest",
+  "command": "/usr/local/clang_12.0.0/bin/clang++   -I/home/pi/work/mukham/build/_deps/googletest-src/googletest/include -I/home/pi/work/mukham/build/_deps/googletest-src/googletest  -O3 -DNDEBUG   -Wall -Wshadow -Werror -Wconversion -DGTEST_HAS_PTHREAD=1 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -std=c++17 -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /home/pi/work/mukham/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "file": "/home/pi/work/mukham/build/_deps/googletest-src/googletest/src/gtest-all.cc"
 }
 ]
