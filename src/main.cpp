@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    RollingBuffer processing_data(100);
+    RollingBuffer landmark_detect_time(100);
     RollingBuffer face_detect_time(100);
 
     // Load models
@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
         fs::path(std::string("models/blazeface/face_detection_short_range.so"));
 #endif
 
-    int batch_size = 5;
+    int batch_size = 1;
     auto face_mesh_detector =
         tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     std::vector<cv::Mat> frames;
@@ -160,7 +160,6 @@ int main(int argc, char **argv) {
     std::deque<cv::Mat> face_images;
     std::deque<cv::Mat> face_landmark_images;
     cv::Mat last_frame;
-    int padding = 10;
 
     bool rotate_image = false;
     int rot_angle = 0;
@@ -317,17 +316,18 @@ int main(int argc, char **argv) {
             ImGui::End();
 
             ImGui::Begin("Face mesh processing time");
-            ImPlot::SetNextPlotLimitsX(processing_data.x_min,
-                                       processing_data.x_max, ImGuiCond_Always);
-            ImPlot::SetNextPlotLimitsY(processing_data.y_min - 5,
-                                       processing_data.y_max + 5,
+            ImPlot::SetNextPlotLimitsX(landmark_detect_time.x_min,
+                                       landmark_detect_time.x_max,
+                                       ImGuiCond_Always);
+            ImPlot::SetNextPlotLimitsY(landmark_detect_time.y_min - 5,
+                                       landmark_detect_time.y_max + 5,
                                        ImGuiCond_Always);
             if (ImPlot::BeginPlot("##Processing Time 1", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
                 // Face mesh processing time plots
-                ImPlot::PlotLine("Facemesh", processing_data.x.data(),
-                                 processing_data.y.data(),
-                                 processing_data._history);
+                ImPlot::PlotLine("Facemesh", landmark_detect_time.x.data(),
+                                 landmark_detect_time.y.data(),
+                                 landmark_detect_time._history);
                 ImPlot::EndPlot();
             }
             ImGui::End();
@@ -373,10 +373,10 @@ int main(int argc, char **argv) {
                                    &face_detect_model, 2);
                 ImGui::RadioButton("BlazeFace Model", &face_detect_model, 3);
                 ImGui::Separator();
-                ImGui::SliderInt("Padding", &padding, 0, 100);
             }
 
             if (ImGui::CollapsingHeader("Landmark detection")) {
+                ImGui::Checkbox("Enable", &face_mesh);
                 ImGui::RadioButton("Dlib landmarks model",
                                    &landmark_model_choice, 0);
                 ImGui::RadioButton("Facemeh model", &landmark_model_choice, 1);
@@ -464,74 +464,60 @@ int main(int argc, char **argv) {
                         cv::rectangle(adjusted_frame, face,
                                       cv::Scalar(255, 0, 0), 2);
                     }
-                    render_frames.push_back(adjusted_frame);
 
                     if (face_mesh) {
+                        start = std::chrono::steady_clock::now();
                         for (cv::Rect2d &face : faces) {
-                            if (frames.size() == batch_size) {
-                                std::vector<tvm_facemesh::TVM_FacemeshResult>
-                                    results;
-                                face_mesh_detector.Detect(frames, results);
+                            auto face_center_x = face.x + (face.width * 0.5);
+                            auto face_center_y = face.y + (face.height * 0.5);
+                            auto start_row =
+                                face_center_y - roi_scale * (face.height * 0.5);
+                            auto start_col =
+                                face_center_x - roi_scale * (face.width * 0.5);
+                            auto end_row =
+                                face_center_y + roi_scale * (face.height * 0.5);
+                            auto end_col =
+                                face_center_x + roi_scale * (face.width * 0.5);
 
-                                for (int frame_idx = 0;
-                                     frame_idx < frames.size(); ++frame_idx) {
-                                    auto &image = frames[frame_idx];
-                                    auto const &result = results[frame_idx];
-                                    processing_data.AddPoint(
-                                        result.processing_time);
-                                    if (result.has_face) {
-                                        for (auto &point : result.mesh) {
-                                            cv::circle(image, point, 0,
-                                                       cv::Scalar(0, 255, 0),
-                                                       -1);
-                                        }
-                                    } else {
-                                        spdlog::info(
-                                            "{}: No face. face score {}",
-                                            counter + frame_idx,
-                                            result.face_score);
-                                    }
-                                    face_landmark_images.push_back(image);
+                            const auto face_image =
+                                adjusted_frame(cv::Range(start_row, end_row),
+                                               cv::Range(start_col, end_col));
+
+                            tvm_facemesh::TVM_FacemeshResult result;
+                            face_mesh_detector.Detect(face_image, result);
+
+                            if (result.has_face) {
+                                for (auto &point : result.mesh) {
+                                    auto adjusted_point =
+                                        cv::Point2d(start_col + point.x,
+                                                    start_row + point.y);
+                                    cv::circle(adjusted_frame, adjusted_point,
+                                               0, cv::Scalar(0, 255, 0), -1);
                                 }
-                                frames.clear();
                             } else {
-                                auto iou = get_iou<double>(face, prev_bbox);
-                                if (iou > 0.9) {
-                                    face = prev_bbox;
-                                }
-
-                                prev_bbox = face;
-
-                                auto start_row =
-                                    std::max<float>(0, face.y - padding);
-                                auto end_row = std::min<float>(
-                                    face.y + face.height + padding,
-                                    small_frame.rows);
-                                auto start_col =
-                                    std::max<float>(0, face.x - padding);
-                                auto end_col = std::min<float>(
-                                    face.x + face.width + padding,
-                                    small_frame.cols);
-
-                                auto face_image =
-                                    small_frame(cv::Range(start_row, end_row),
-                                                cv::Range(start_col, end_col));
-                                face_images.push_back(face_image);
-                                frames.push_back(face_image);
+                                spdlog::info("No face. face score {}",
+                                             result.face_score);
                             }
                         }
+                        end = std::chrono::steady_clock::now();
+                        auto landmark_detect_duration =
+                            std::chrono::duration_cast<
+                                std::chrono::milliseconds>(end - start)
+                                .count();
+                        landmark_detect_time.AddPoint(landmark_detect_duration);
                     }
+
+                    render_frames.push_back(adjusted_frame);
                 }
-            }
 
-            if (!render_frames.empty()) {
-                img_renderer.UpdateAndRender(render_frames.front());
-                render_frames.pop_front();
+                if (!render_frames.empty()) {
+                    img_renderer.UpdateAndRender(render_frames.front());
+                    render_frames.pop_front();
+                }
+                GLuint texture_id = img_renderer.GetTextureId();
+                ImGui::Image((void *)(intptr_t)(texture_id),
+                             ImVec2(display_image_width, display_image_height));
             }
-
-            GLuint texture_id = img_renderer.GetTextureId();
-            ImGui::Image((void *)(intptr_t)(texture_id),
-                         ImVec2(display_image_width, display_image_height));
             ImGui::End();
         }
 

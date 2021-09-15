@@ -6,7 +6,7 @@
 
 namespace opencv_facedetect {
 OpenCVFaceDetectLBP::OpenCVFaceDetectLBP() {
-    _detector.load("lbpcascade_frontalface_improved.xml");
+    _detector.load("./models/opencv/lbpcascade_frontalface_improved.xml");
 }
 
 std::vector<cv::Rect2d> OpenCVFaceDetectLBP::DetectFace(cv::Mat& input_image) {
@@ -27,8 +27,9 @@ std::vector<cv::Rect2d> OpenCVFaceDetectLBP::DetectFace(cv::Mat& input_image) {
 }
 
 OpenCVFaceDetectTF::OpenCVFaceDetectTF() {
-    const std::string config_file{"./opencv_face_detector.pbtxt"};
-    const std::string weight_file{"./opencv_face_detector_uint8.pb"};
+    const std::string config_file{"./models/opencv/opencv_face_detector.pbtxt"};
+    const std::string weight_file{
+        "./models/opencv/opencv_face_detector_uint8.pb"};
     _detector = cv::dnn::readNetFromTensorflow(weight_file, config_file);
 }
 std::vector<cv::Rect2d> OpenCVFaceDetectTF::DetectFace(cv::Mat& input_image) {

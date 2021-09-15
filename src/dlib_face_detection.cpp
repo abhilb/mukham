@@ -9,7 +9,7 @@
 namespace dlib_facedetect {
 
 DlibFaceDetectDnn::DlibFaceDetectDnn() {
-    deserialize("mmod_human_face_detector.dat") >> net;
+    deserialize("models/dlib/mmod_human_face_detector.dat") >> net;
 }
 
 std::vector<cv::Rect2d> DlibFaceDetectDnn::DetectFace(cv::Mat& image) {
@@ -30,7 +30,8 @@ std::vector<cv::Rect2d> DlibFaceDetectDnn::DetectFace(cv::Mat& image) {
 
 DlibFaceDetectHog::DlibFaceDetectHog() {
     _detector = dlib::get_frontal_face_detector();
-    deserialize("shape_predictor_68_face_landmarks.dat") >> _predictor;
+    deserialize("models/dlib/shape_predictor_68_face_landmarks.dat") >>
+        _predictor;
 }
 
 std::vector<cv::Rect2d> DlibFaceDetectHog::DetectFace(cv::Mat& image) {
