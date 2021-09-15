@@ -1,7 +1,11 @@
 #include "tvm_blazeface.h"
 
 #include <algorithm>
+#include <fstream>
 #include <memory>
+#include <opencv2/core.hpp>
+#include <opencv2/core/base.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <utility>
 
@@ -9,22 +13,35 @@
 
 namespace tvm_blazeface {
 
-void PreprocessImage(const cv::Mat& input_image, cv::Mat& output_image,
-                     const cv::Size& output_size, double min_val,
-                     double max_val) {
+void PreprocessImage(const cv::Mat& input_image, const cv::Size& output_size,
+                     double min_val, double max_val, cv::Mat& output_image,
+                     int& padx, int& pady) {
+    padx = input_image.rows > input_image.cols
+               ? (input_image.rows - input_image.cols) >> 1
+               : 0;
+    pady = input_image.cols > input_image.rows
+               ? (input_image.cols - input_image.rows) >> 1
+               : 0;
+
     cv::Mat scaled_image;
-    cv::resize(input_image, scaled_image, output_size);
-    scaled_image.convertTo(output_image, CV_32FC3, (max_val - min_val) / 127.5,
+    cv::Mat input_image_with_border;
+    cv::copyMakeBorder(input_image, input_image_with_border, pady, pady, padx,
+                       padx, cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
+    cv::resize(input_image_with_border, scaled_image, output_size,
+               cv::INTER_AREA);
+    scaled_image.convertTo(output_image, CV_32FC3, (max_val - min_val) / 255.0,
                            min_val);
 }
 
 std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
     // preprocessing
     cv::Mat preprocessed_image;
-    PreprocessImage(input_image, preprocessed_image,
-                    cv::Size(anchor_options.input_size_width,
-                             anchor_options.input_size_height),
-                    -1.0, 1.0);
+    auto expected_input_size = cv::Size(anchor_options.input_size_width,
+                                        anchor_options.input_size_height);
+
+    int padx, pady;
+    PreprocessImage(input_image, expected_input_size, -1.0, 1.0,
+                    preprocessed_image, padx, pady);
 
     // Set the input
     auto single_image_size =
@@ -61,6 +78,14 @@ std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
     // Convert to boxes
     std::vector<cv::Rect2d> boxes;
     _decode_boxes(std::move(raw_boxes), std::move(raw_scores), boxes);
+
+    auto scale_factor = (std::max)(input_image.rows, input_image.cols);
+    for (auto& box : boxes) {
+        box.x = (box.x * scale_factor) - padx;
+        box.y = (box.y * scale_factor) - pady;
+        box.width *= scale_factor;
+        box.height *= scale_factor;
+    }
 
     return boxes;
 }
@@ -101,7 +126,7 @@ void TVM_Blazeface::_get_anchor_boxes() {
 void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
                                   std::unique_ptr<float[]> raw_scores,
                                   std::vector<cv::Rect2d>& boxes) {
-    std::vector<std::pair<double, cv::Rect2d>> detections;
+    DetectionsVec detections;
     for (int i = 0; i < num_boxes; ++i) {
         auto score = raw_scores[i];
         if (box_options.sigmoid_score) {
@@ -119,16 +144,15 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
         float x_center = raw_boxes[box_offset + 1];
         float h = raw_boxes[box_offset + 2];
         float w = raw_boxes[box_offset + 3];
+        if (box_options.reverse_output_order) {
+            std::swap(x_center, y_center);
+            std::swap(h, w);
+        }
 
         x_center = (x_center / box_options.x_scale) + anchors[i].first;
         y_center = (y_center / box_options.y_scale) + anchors[i].second;
         w = w / box_options.x_scale;
         h = h / box_options.y_scale;
-
-        if (box_options.reverse_output_order) {
-            std::swap(x_center, y_center);
-            std::swap(h, w);
-        }
 
         if (h < 0 || w < 0) continue;
 
@@ -138,10 +162,85 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
             std::make_pair(score, cv::Rect2d(left, top, w, h)));
     }
 
-    std::sort(detections.begin(), detections.end(),
-              [](auto a, auto b) { return a.first < b.first; });
+    _weighted_nms(detections, boxes);
+}
 
-    _nms(detections, boxes);
+void TVM_Blazeface::_make_indexed_scores(const DetectionsVec& detections,
+                                         IndexedScoresVec& idx_scores) {
+    int index = 0;
+    for (const auto& detection : detections) {
+        idx_scores.push_back(std::make_pair(index, (double)(detection.first)));
+        index++;
+    }
+}
+
+void TVM_Blazeface::_weighted_nms(const std::vector<Detection> detections,
+                                  std::vector<cv::Rect2d>& output) {
+    std::vector<IndexedScore> indexed_scores;
+    _make_indexed_scores(detections, indexed_scores);
+
+    // sort the index scores
+    std::sort(indexed_scores.begin(), indexed_scores.end(),
+              [](auto a, auto b) { return a.second > b.second; });
+
+    IndexedScoresVec remaining;
+    IndexedScoresVec candidates;
+    const double min_supression_threshold = 0.3;
+
+    while (!indexed_scores.empty()) {
+        const int original_indexed_scores_size = indexed_scores.size();
+        const Detection detection = detections[indexed_scores.front().first];
+
+        if (detection.first < box_options.min_score_thresh) break;
+
+        remaining.clear();
+        candidates.clear();
+
+        auto detection_box = detection.second;
+        for (const auto& idx_score : indexed_scores) {
+            auto other_bbox = detections[idx_score.first].second;
+            auto similarity = _overlap_similarity(detection_box, other_bbox);
+
+            if (similarity > min_supression_threshold)
+                candidates.push_back(idx_score);
+            else
+                remaining.push_back(idx_score);
+        }
+
+        auto weighted_detection = detection;
+        if (!candidates.empty()) {
+            double wxmin = 0.0;
+            double wxmax = 0.0;
+            double wymin = 0.0;
+            double wymax = 0.0;
+            double total_score = 0.0;
+
+            for (auto& candidate : candidates) {
+                total_score += candidate.second;
+                auto bbox = detections[candidate.first].second;
+                wxmin += (bbox.x * candidate.second);
+                wymin += (bbox.y * candidate.second);
+                wxmax += ((bbox.width + bbox.x) * candidate.second);
+                wymax += ((bbox.height + bbox.y) * candidate.second);
+            }
+
+            if (total_score > 0) {
+                weighted_detection.second.x = wxmin / total_score;
+                weighted_detection.second.y = wymin / total_score;
+                weighted_detection.second.width =
+                    (wxmax / total_score) - weighted_detection.second.x;
+                weighted_detection.second.height =
+                    (wymax / total_score) - weighted_detection.second.y;
+            }
+        }
+
+        output.push_back(weighted_detection.second);
+
+        if (original_indexed_scores_size == remaining.size())
+            break;
+        else
+            indexed_scores = std::move(remaining);
+    }
 }
 
 void TVM_Blazeface::_nms(
@@ -168,14 +267,9 @@ void TVM_Blazeface::_nms(
 
         if (!supressed) {
             kept_boxes.push_back(box);
-            auto scaled_box = cv::Rect2d(box.x * box_options.x_scale,
-                                         box.y * box_options.y_scale,
-                                         box.width * box_options.x_scale,
-                                         box.height * box_options.y_scale);
-            output.push_back(scaled_box);
+            output.push_back(box);
         }
     }
-    spdlog::info("Number of boxes: {}", output.size());
 }
 
 double TVM_Blazeface::_overlap_similarity(const cv::Rect2d& box1,
@@ -209,6 +303,7 @@ cv::Rect2d TVM_Blazeface::_get_intesection(const cv::Rect2d& box1,
     if ((xmin < xmax) && (ymin < ymax)) {
         return cv::Rect2d(xmin, ymin, (xmax - xmin), (ymax - ymin));
     }
+
     return cv::Rect2d();
 }
 }  // namespace tvm_blazeface

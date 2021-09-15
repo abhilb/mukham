@@ -48,9 +48,14 @@ struct TensorToBoxesOptions {
     double min_score_thresh;
 };
 
-void PreprocessImage(const cv::Mat& input_image, cv::Mat& output_image,
-                     const cv::Size& output_size, double min_val,
-                     double max_val);
+void PreprocessImage(const cv::Mat& input_image, const cv::Size& output_size,
+                     double min_val, double max_val, cv::Mat& output_image,
+                     int& padx, int& pady);
+
+using IndexedScore = std::pair<int, double>;
+using Detection = std::pair<double, cv::Rect2d>;
+using DetectionsVec = std::vector<Detection>;
+using IndexedScoresVec = std::vector<IndexedScore>;
 
 class TVM_Blazeface final {
    public:
@@ -75,7 +80,7 @@ class TVM_Blazeface final {
                        .num_keypoints = 6,
                        .num_values_per_keypoint = 2,
                        .sigmoid_score = true,
-                       .score_clipping_thresh = 100.0,
+                       .score_clipping_thresh = 80.0,
                        .reverse_output_order = true,
                        .x_scale = 128.0,
                        .y_scale = 128.0,
@@ -128,12 +133,18 @@ class TVM_Blazeface final {
    private:
     void _get_anchor_boxes();
 
+    void _make_indexed_scores(const DetectionsVec& detections,
+                              IndexedScoresVec& idx_scores);
+
     void _decode_boxes(std::unique_ptr<float[]> raw_boxes,
                        std::unique_ptr<float[]> raw_scores,
                        std::vector<cv::Rect2d>& boxes);
 
     void _nms(const std::vector<std::pair<double, cv::Rect2d>> detections,
               std::vector<cv::Rect2d>& output);
+
+    void _weighted_nms(const std::vector<Detection> detections,
+                       std::vector<cv::Rect2d>& output);
 
     double _overlap_similarity(const cv::Rect2d& box1, const cv::Rect2d& box2);
 
