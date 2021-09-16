@@ -153,8 +153,6 @@ int main(int argc, char **argv) {
 #endif
 
     int batch_size = 1;
-    auto face_mesh_detector =
-        tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     std::vector<cv::Mat> frames;
     std::deque<cv::Mat> render_frames;
     std::deque<cv::Mat> face_images;
@@ -167,6 +165,9 @@ int main(int argc, char **argv) {
     float roi_scale = 1.0;
     int landmark_model_choice = 0;
 
+    spdlog::info("Loading facemesh model");
+    auto face_mesh_detector =
+        tvm_facemesh::TVM_Facemesh(model_path, batch_size);
     spdlog::info("Loading dlib model");
     auto dlib_hog_face_detector = dlib_facedetect::DlibFaceDetectHog();
     spdlog::info("Loading opencv model");
@@ -176,6 +177,8 @@ int main(int argc, char **argv) {
     spdlog::info("Loading Blazeface model");
     auto blazeface_face_detector =
         tvm_blazeface::TVM_Blazeface(blazeface_model_path);
+    spdlog::info("Loading dlib landmarks model");
+    auto dlib_landmarks_detector = dlib_facedetect::DlibFaceLandmarks();
 
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -430,6 +433,7 @@ int main(int argc, char **argv) {
 
                     auto start = std::chrono::steady_clock::now();
                     std::vector<cv::Rect2d> faces;
+                    std::vector<cv::Point2d> keypoints;
 
                     cv::Mat bgr_frame;
                     switch (face_detect_model) {
@@ -447,8 +451,15 @@ int main(int argc, char **argv) {
                                 opencv_tf_face_detector.DetectFace(bgr_frame);
                             break;
                         case 3:
-                            faces = blazeface_face_detector.DetectFace(
-                                adjusted_frame);
+                            auto detections =
+                                blazeface_face_detector.DetectFace(
+                                    adjusted_frame);
+                            for (const auto &d : detections) {
+                                faces.push_back(d.bounding_box);
+                                for (const auto &k : d.key_points) {
+                                    keypoints.push_back(k);
+                                }
+                            }
                             break;
                     }
 
@@ -464,39 +475,63 @@ int main(int argc, char **argv) {
                         cv::rectangle(adjusted_frame, face,
                                       cv::Scalar(255, 0, 0), 2);
                     }
+                    for (const auto &k : keypoints) {
+                        cv::circle(adjusted_frame, k, 2, cv::Scalar(0, 0, 255),
+                                   -1);
+                    }
 
                     if (face_mesh) {
                         start = std::chrono::steady_clock::now();
                         for (cv::Rect2d &face : faces) {
                             auto face_center_x = face.x + (face.width * 0.5);
                             auto face_center_y = face.y + (face.height * 0.5);
+
                             auto start_row =
                                 face_center_y - roi_scale * (face.height * 0.5);
+                            start_row = (std::max)(0.0, start_row);
+
                             auto start_col =
                                 face_center_x - roi_scale * (face.width * 0.5);
+                            start_col = (std::max)(0.0, start_col);
+
                             auto end_row =
                                 face_center_y + roi_scale * (face.height * 0.5);
+                            end_row = (std::min)(end_row,
+                                                 (double)adjusted_frame.rows);
+
                             auto end_col =
                                 face_center_x + roi_scale * (face.width * 0.5);
+                            end_col = (std::min)(end_col,
+                                                 (double)adjusted_frame.cols);
 
                             const auto face_image =
                                 adjusted_frame(cv::Range(start_row, end_row),
                                                cv::Range(start_col, end_col));
 
-                            tvm_facemesh::TVM_FacemeshResult result;
-                            face_mesh_detector.Detect(face_image, result);
+                            switch (landmark_model_choice) {
+                                case 0:
+                                    // dlib landmarks
+                                    break;
+                                case 1:
+                                    // facemesh landmarks
+                                    tvm_facemesh::TVM_FacemeshResult result;
+                                    face_mesh_detector.Detect(face_image,
+                                                              result);
 
-                            if (result.has_face) {
-                                for (auto &point : result.mesh) {
-                                    auto adjusted_point =
-                                        cv::Point2d(start_col + point.x,
-                                                    start_row + point.y);
-                                    cv::circle(adjusted_frame, adjusted_point,
-                                               0, cv::Scalar(0, 255, 0), -1);
-                                }
-                            } else {
-                                spdlog::info("No face. face score {}",
-                                             result.face_score);
+                                    if (result.has_face) {
+                                        for (auto &point : result.mesh) {
+                                            auto adjusted_point = cv::Point2d(
+                                                start_col + point.x,
+                                                start_row + point.y);
+                                            cv::circle(
+                                                adjusted_frame, adjusted_point,
+                                                0, cv::Scalar(0, 255, 0), -1);
+                                        }
+                                    } else {
+                                        spdlog::info("No face. face score {}",
+                                                     result.face_score);
+                                    }
+                                    break;
                             }
                         }
                         end = std::chrono::steady_clock::now();
