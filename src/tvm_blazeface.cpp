@@ -33,7 +33,7 @@ void PreprocessImage(const cv::Mat& input_image, const cv::Size& output_size,
                            min_val);
 }
 
-std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
+std::vector<Detection> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
     // preprocessing
     cv::Mat preprocessed_image;
     auto expected_input_size = cv::Size(anchor_options.input_size_width,
@@ -76,18 +76,24 @@ std::vector<cv::Rect2d> TVM_Blazeface::DetectFace(const cv::Mat& input_image) {
         output_tensor_2_size * output_tensor_2.DataType().bytes());
 
     // Convert to boxes
-    std::vector<cv::Rect2d> boxes;
-    _decode_boxes(std::move(raw_boxes), std::move(raw_scores), boxes);
+    std::vector<Detection> detections;
+    _decode_boxes(std::move(raw_boxes), std::move(raw_scores), detections);
 
     auto scale_factor = (std::max)(input_image.rows, input_image.cols);
-    for (auto& box : boxes) {
+    for (auto& d : detections) {
+        auto& box = d.bounding_box;
         box.x = (box.x * scale_factor) - padx;
         box.y = (box.y * scale_factor) - pady;
         box.width *= scale_factor;
         box.height *= scale_factor;
+
+        for (auto& kp : d.key_points) {
+            kp.x = (kp.x * scale_factor) - padx;
+            kp.y = (kp.y * scale_factor) - pady;
+        }
     }
 
-    return boxes;
+    return detections;
 }
 
 void TVM_Blazeface::_get_anchor_boxes() {
@@ -125,8 +131,8 @@ void TVM_Blazeface::_get_anchor_boxes() {
 
 void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
                                   std::unique_ptr<float[]> raw_scores,
-                                  std::vector<cv::Rect2d>& boxes) {
-    DetectionsVec detections;
+                                  std::vector<Detection>& detections) {
+    DetectionsVec all_detections;
     for (int i = 0; i < num_boxes; ++i) {
         auto score = raw_scores[i];
         if (box_options.sigmoid_score) {
@@ -154,28 +160,45 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
         w = w / box_options.x_scale;
         h = h / box_options.y_scale;
 
+        std::array<cv::Point2d, 6> key_points;
+        for (int kidx = 0; kidx < box_options.num_keypoints; kidx++) {
+            auto keypoint_offset = i * box_options.num_coords +
+                                   box_options.keypoint_coord_offset +
+                                   kidx * box_options.num_values_per_keypoint;
+            auto keypoint_y = raw_boxes[keypoint_offset];
+            auto keypoint_x = raw_boxes[keypoint_offset + 1];
+            if (box_options.reverse_output_order) {
+                std::swap(keypoint_y, keypoint_x);
+            }
+
+            key_points[kidx] = cv::Point2d(
+                keypoint_x / box_options.x_scale + anchors[i].first,
+                keypoint_y / box_options.y_scale + anchors[i].second);
+        }
+
         if (h < 0 || w < 0) continue;
 
         const float left = x_center - w / 2.f;
         const float top = y_center - h / 2.f;
-        detections.push_back(
-            std::make_pair(score, cv::Rect2d(left, top, w, h)));
+        all_detections.push_back({.score = score,
+                                  .bounding_box = cv::Rect2d(left, top, w, h),
+                                  .key_points = std::move(key_points)});
     }
 
-    _weighted_nms(detections, boxes);
+    _weighted_nms(all_detections, detections);
 }
 
 void TVM_Blazeface::_make_indexed_scores(const DetectionsVec& detections,
                                          IndexedScoresVec& idx_scores) {
     int index = 0;
     for (const auto& detection : detections) {
-        idx_scores.push_back(std::make_pair(index, (double)(detection.first)));
+        idx_scores.push_back(std::make_pair(index, (double)(detection.score)));
         index++;
     }
 }
 
 void TVM_Blazeface::_weighted_nms(const std::vector<Detection> detections,
-                                  std::vector<cv::Rect2d>& output) {
+                                  std::vector<Detection>& output) {
     std::vector<IndexedScore> indexed_scores;
     _make_indexed_scores(detections, indexed_scores);
 
@@ -191,14 +214,14 @@ void TVM_Blazeface::_weighted_nms(const std::vector<Detection> detections,
         const int original_indexed_scores_size = indexed_scores.size();
         const Detection detection = detections[indexed_scores.front().first];
 
-        if (detection.first < box_options.min_score_thresh) break;
+        if (detection.score < box_options.min_score_thresh) break;
 
         remaining.clear();
         candidates.clear();
 
-        auto detection_box = detection.second;
+        auto detection_box = detection.bounding_box;
         for (const auto& idx_score : indexed_scores) {
-            auto other_bbox = detections[idx_score.first].second;
+            auto other_bbox = detections[idx_score.first].bounding_box;
             auto similarity = _overlap_similarity(detection_box, other_bbox);
 
             if (similarity > min_supression_threshold)
@@ -217,7 +240,7 @@ void TVM_Blazeface::_weighted_nms(const std::vector<Detection> detections,
 
             for (auto& candidate : candidates) {
                 total_score += candidate.second;
-                auto bbox = detections[candidate.first].second;
+                auto bbox = detections[candidate.first].bounding_box;
                 wxmin += (bbox.x * candidate.second);
                 wymin += (bbox.y * candidate.second);
                 wxmax += ((bbox.width + bbox.x) * candidate.second);
@@ -225,16 +248,16 @@ void TVM_Blazeface::_weighted_nms(const std::vector<Detection> detections,
             }
 
             if (total_score > 0) {
-                weighted_detection.second.x = wxmin / total_score;
-                weighted_detection.second.y = wymin / total_score;
-                weighted_detection.second.width =
-                    (wxmax / total_score) - weighted_detection.second.x;
-                weighted_detection.second.height =
-                    (wymax / total_score) - weighted_detection.second.y;
+                weighted_detection.bounding_box.x = wxmin / total_score;
+                weighted_detection.bounding_box.y = wymin / total_score;
+                weighted_detection.bounding_box.width =
+                    (wxmax / total_score) - weighted_detection.bounding_box.x;
+                weighted_detection.bounding_box.height =
+                    (wymax / total_score) - weighted_detection.bounding_box.y;
             }
         }
 
-        output.push_back(weighted_detection.second);
+        output.push_back(weighted_detection);
 
         if (original_indexed_scores_size == remaining.size())
             break;

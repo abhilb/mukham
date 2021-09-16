@@ -12,9 +12,10 @@ namespace tvm_blazeface {
 namespace tr = tvm::runtime;
 namespace fs = std::filesystem;
 
-struct BlazeFaceResult {
-    cv::Rect2i bounding_box;
-    std::array<cv::Point2d, 5> key_points;
+struct Detection {
+    double score;
+    cv::Rect2d bounding_box;
+    std::array<cv::Point2d, 6> key_points;
 };
 
 struct SSDOptions {
@@ -53,7 +54,6 @@ void PreprocessImage(const cv::Mat& input_image, const cv::Size& output_size,
                      int& padx, int& pady);
 
 using IndexedScore = std::pair<int, double>;
-using Detection = std::pair<double, cv::Rect2d>;
 using DetectionsVec = std::vector<Detection>;
 using IndexedScoresVec = std::vector<IndexedScore>;
 
@@ -126,7 +126,7 @@ class TVM_Blazeface final {
         _get_anchor_boxes();
     }
 
-    std::vector<cv::Rect2d> DetectFace(const cv::Mat& input_image);
+    std::vector<Detection> DetectFace(const cv::Mat& input_image);
 
     bool CanExecute() const { return can_execute; }
 
@@ -138,13 +138,13 @@ class TVM_Blazeface final {
 
     void _decode_boxes(std::unique_ptr<float[]> raw_boxes,
                        std::unique_ptr<float[]> raw_scores,
-                       std::vector<cv::Rect2d>& boxes);
+                       std::vector<Detection>& detections);
 
     void _nms(const std::vector<std::pair<double, cv::Rect2d>> detections,
               std::vector<cv::Rect2d>& output);
 
     void _weighted_nms(const std::vector<Detection> detections,
-                       std::vector<cv::Rect2d>& output);
+                       std::vector<Detection>& output);
 
     double _overlap_similarity(const cv::Rect2d& box1, const cv::Rect2d& box2);
 
