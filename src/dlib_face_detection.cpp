@@ -30,8 +30,6 @@ std::vector<cv::Rect2d> DlibFaceDetectDnn::DetectFace(cv::Mat& image) {
 
 DlibFaceDetectHog::DlibFaceDetectHog() {
     _detector = dlib::get_frontal_face_detector();
-    deserialize("models/dlib/shape_predictor_68_face_landmarks.dat") >>
-        _predictor;
 }
 
 std::vector<cv::Rect2d> DlibFaceDetectHog::DetectFace(cv::Mat& image) {
@@ -47,7 +45,12 @@ std::vector<cv::Rect2d> DlibFaceDetectHog::DetectFace(cv::Mat& image) {
     return result;
 }
 
-std::vector<cv::Point2d> DlibFaceDetectHog::DetectLandmarks(
+DlibFaceLandmarks::DlibFaceLandmarks() {
+    deserialize("models/dlib/shape_predictor_68_face_landmarks.dat") >>
+        _predictor;
+}
+
+std::vector<cv::Point2d> DlibFaceLandmarks::DetectLandmarks(
     cv::Mat& image, cv::Rect2d& bounding_box) {
     std::vector<cv::Point2d> result;
 

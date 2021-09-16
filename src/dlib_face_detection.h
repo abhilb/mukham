@@ -43,11 +43,18 @@ class DlibFaceDetectHog {
    public:
     DlibFaceDetectHog();
     std::vector<cv::Rect2d> DetectFace(cv::Mat& image);
+
+   private:
+    dlib::frontal_face_detector _detector;
+};
+
+class DlibFaceLandmarks {
+   public:
+    DlibFaceLandmarks();
     std::vector<cv::Point2d> DetectLandmarks(cv::Mat& image,
                                              cv::Rect2d& bounding_box);
 
    private:
-    dlib::frontal_face_detector _detector;
     dlib::shape_predictor _predictor;
 };
 }  // namespace dlib_facedetect
