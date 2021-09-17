@@ -64,6 +64,10 @@ std::vector<cv::Point2d> DlibFaceLandmarks::DetectLandmarks(
                     bounding_box.y + bounding_box.height));
 
     auto shape = _predictor(dlib_matrix, dlib_rect);
+    for (int i = 0; i < shape.num_parts(); i++) {
+        auto point = shape.part(i);
+        result.push_back(cv::Point2d(point.x(), point.y()));
+    }
     return result;
 }
 }  // namespace dlib_facedetect

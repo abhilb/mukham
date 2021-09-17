@@ -509,10 +509,25 @@ int main(int argc, char **argv) {
                                                cv::Range(start_col, end_col));
 
                             switch (landmark_model_choice) {
-                                case 0:
+                                case 0: {
                                     // dlib landmarks
-                                    break;
-                                case 1:
+                                    auto face_roi =
+                                        cv::Rect2d(start_col, start_row,
+                                                   (end_col - start_col),
+                                                   (end_row - start_row));
+
+                                    auto dlib_landmarks =
+                                        dlib_landmarks_detector.DetectLandmarks(
+                                            adjusted_frame, face_roi);
+
+                                    for (auto &point : dlib_landmarks) {
+                                        cv::circle(
+                                            adjusted_frame,
+                                            cv::Point2d(point.x, point.y), 1,
+                                            cv::Scalar(0, 255, 0), -1);
+                                    }
+                                } break;
+                                case 1: {
                                     // facemesh landmarks
                                     tvm_facemesh::TVM_FacemeshResult result;
                                     face_mesh_detector.Detect(face_image,
@@ -531,7 +546,7 @@ int main(int argc, char **argv) {
                                         spdlog::info("No face. face score {}",
                                                      result.face_score);
                                     }
-                                    break;
+                                } break;
                             }
                         }
                         end = std::chrono::steady_clock::now();
