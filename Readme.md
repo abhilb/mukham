@@ -1,5 +1,6 @@
-A GUI Application that runs on Raspberry PI to evaluate various face detection models. The
-inference is done using Apache TVM runtime.
+![example workflow](https://github.com/abhilb/mukham/actions/workflows/cmake.yml/badge.svg)
+
+Inference of various face detection and face landmark detection models using different runtimes like Apache TVM runtime, ONNX.
 
 ![](assets/screenshot.gif)
 
