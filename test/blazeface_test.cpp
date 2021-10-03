@@ -16,8 +16,10 @@ TEST(BlazeFaceTest, TestCanExecute) {
 TEST(BlazeFaceTest, TestNormalize) {
     cv::Mat image = cv::imread("face_detect.bmp");
     cv::Mat out_image;
-    tvm_blazeface::PreprocessImage(image, out_image, cv::Size(128, 128), -1.0,
-                                   1.0);
+    int padx, pady;
+
+    tvm_blazeface::PreprocessImage(image, cv::Size(128, 128), -1.0, 1.0,
+                                   out_image, padx, pady);
     EXPECT_EQ(out_image.rows, 128);
     EXPECT_EQ(out_image.cols, 128);
 
