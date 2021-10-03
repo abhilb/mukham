@@ -20,8 +20,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
     
-    - name: Install SDL2
+    - name: Install Deps
       run: |
         sudo apt-get update -y -qq
         sudo apt-get install -y libsdl2-dev
