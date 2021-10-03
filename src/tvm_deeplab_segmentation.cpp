@@ -1,5 +1,5 @@
 
-#include "deeplab_segmentation.h"
+#include "tvm_deeplab_segmentation.h"
 
 #include "spdlog/spdlog.h"
 
@@ -36,7 +36,8 @@ void DeeplabSegmentationModel::Segment(const cv::Mat& input_image,
 
     _preprocess(input_image, preprocessed_image);
     _infer(preprocessed_image, model_output);
-    _postprocess(model_output, output_image);
+    _postprocess(model_output, output_image,
+                 cv::Size(input_image.cols, input_image.rows));
 }
 
 void DeeplabSegmentationModel::_preprocess(const cv::Mat& input,
@@ -65,5 +66,6 @@ void DeeplabSegmentationModel::_infer(const cv::Mat& input, cv::Mat& output) {
 }
 
 void DeeplabSegmentationModel::_postprocess(const cv::Mat& input,
-                                            cv::Mat& output) {}
+                                            cv::Mat& output,
+                                            const cv::Size& output_size) {}
 }  // namespace mukham
