@@ -61,6 +61,35 @@ class TVM_Blazeface final {
    public:
     explicit TVM_Blazeface(fs::path& model_path, int batch_size = 1) {
         can_execute = true;
+
+#ifdef WIN32
+        anchor_options = { /* .num_layers = */ 4,
+                           /* .min_scale = */ 0.1484375,
+                           /* .max_scale = */ 0.75,
+                           /* .input_size_height = */ 128,
+                           /* .input_size_width = */ 128,
+                           /* .anchor_offset_x = */ 0.5,
+                           /* .anchor_offset_y = */ 0.5,
+                           /* .strides = */ {8, 16, 16, 16},
+                           /* .aspect_ratios = */ 1.0,
+                           /* .fixed_anchor_size = */ true };
+
+        box_options = { /* .num_classes = */ 1,
+                        /* .num_boxes = */ 896,
+                        /* .num_coords = */ 16,
+                        /* .box_coord_offset = */ 0,
+                        /* .keypoint_coord_offset = */ 4,
+                        /* .num_keypoints = */ 6,
+                        /* .num_values_per_keypoint = */ 2,
+                        /* .sigmoid_score = */ true,
+                        /* .score_clipping_thresh = */ 80.0,
+                        /* .reverse_output_order = */ true,
+                        /* .x_scale = */ 128.0,
+                        /* .y_scale = */ 128.0,
+                        /* .h_scale = */ 128.0,
+                        /* .w_scale = */ 128.0,
+                        /* .min_score_thresh = */ 0.5 };
+#else
         anchor_options = {.num_layers = 4,
                           .min_scale = 0.1484375,
                           .max_scale = 0.75,
@@ -87,7 +116,7 @@ class TVM_Blazeface final {
                        .h_scale = 128.0,
                        .w_scale = 128.0,
                        .min_score_thresh = 0.5};
-
+#endif
         auto file_exists = fs::exists(model_path);
         auto has_file_name = model_path.has_filename();
         auto has_extension = model_path.has_extension();

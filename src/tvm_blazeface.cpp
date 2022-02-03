@@ -180,9 +180,15 @@ void TVM_Blazeface::_decode_boxes(std::unique_ptr<float[]> raw_boxes,
 
         const float left = x_center - w / 2.f;
         const float top = y_center - h / 2.f;
-        all_detections.push_back({.score = score,
+#ifdef WIN32
+        all_detections.push_back({/* .score = */ score,
+                                  /* .bounding_box = */ cv::Rect2d(left, top, w, h),
+                                  /* .key_points = */ std::move(key_points)});
+#else
+        all_detections.push_back({ .score = score,
                                   .bounding_box = cv::Rect2d(left, top, w, h),
-                                  .key_points = std::move(key_points)});
+                                  .key_points = std::move(key_points) });
+#endif
     }
 
     _weighted_nms(all_detections, detections);

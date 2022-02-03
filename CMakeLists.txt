@@ -1,4 +1,4 @@
-    cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to Release")
     set(CMAKE_BUILD_TYPE "Release")
@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME} src/main.cpp
 target_compile_definitions(${PROJECT_NAME} PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
 if(WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC TVM_EXPORTS)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC NOMINMAX)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui")
