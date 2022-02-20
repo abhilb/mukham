@@ -1,5 +1,7 @@
 ![example workflow](https://github.com/abhilb/mukham/actions/workflows/cmake.yml/badge.svg)
 
+![logo](logo.png)
+
 A framework to test various face detetion and face landmarks models. 
 Supports the following models now:
 
