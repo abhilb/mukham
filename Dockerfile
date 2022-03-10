@@ -15,4 +15,25 @@ RUN apt-get install -y git cmake g++ \
     libxml2-dev \
     libopenblas-dev \
     liblapack-dev
-ADD . /mukham/
+
+RUN mkdir mukham
+ADD ./src mukham/src
+ADD ./imgui mukham/imgui
+ADD ./implot mukham/implot
+ADD ./dlib mukham/dlib
+ADD ./spdlog mukham/spdlog
+ADD ./test mukham/test
+ADD ./tvm mukham/tvm
+ADD ./assets mukham/assets
+ADD ./models mukham/models
+ADD ./CMakeLists.txt mukham/CMakeLists.txt
+
+RUN mkdir mukham/build
+
+ADD ./build.sh mukham/build/build.sh
+
+WORKDIR mukham/build
+
+CMD ["/bin/bash", "-c", "./build.sh"]
+
+

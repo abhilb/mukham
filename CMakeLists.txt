@@ -54,6 +54,12 @@ if(WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC NOMINMAX)
 endif()
 
+message(STATUS ${CMAKE_BINARY_DIR})
+set_target_properties( ${PROJECT_NAME}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui")
 target_include_directories(${PROJECT_NAME} PUBLIC "imgui/backends")
 target_include_directories(${PROJECT_NAME} PUBLIC "implot")
@@ -89,7 +95,7 @@ add_custom_command(
 
 enable_testing()
 
-add_executable(blazeface_test 
+add_executable(blazeface_test
     test/blazeface_test.cpp
     src/tvm_blazeface.cpp
     ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
