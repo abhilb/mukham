@@ -1,0 +1,29 @@
+name: Raspberry PI 4 Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Deps
+        run: |
+          sudo apt-get update -y -qq
+          sudo apt-get install -y qemu-user-static
+          sudo apt-get install -y binfmt-support
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image
+        run: docker build -t mukham-pi4 -f docker/Dockerfile.pi4 .
+
