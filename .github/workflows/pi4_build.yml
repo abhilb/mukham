@@ -1,9 +1,6 @@
 name: Raspberry PI 4 Build
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: workflow_dispatch
 
 env:
   BUILD_TYPE: Release
