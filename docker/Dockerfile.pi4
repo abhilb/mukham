@@ -1,0 +1,22 @@
+FROM balenalib/raspberrypi4-64:bullseye
+
+RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y git cmake gcc-aarch64-linux-gnu \
+    libsdl2-dev \
+    libopencv-dev \
+    python3 \
+    libtinfo-dev \
+    zlib1g-dev \
+    build-essential \
+    libedit-dev \
+    libxml2-dev \
+    libopenblas-dev \
+    liblapack-dev
+
+ADD . mukham
+
+WORKDIR mukham
+
+
+CMD ["/bin/bash"]
