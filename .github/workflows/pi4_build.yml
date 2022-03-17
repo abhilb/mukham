@@ -23,5 +23,8 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t mukham-pi4 -f docker/Dockerfile.pi4 .
+        
+      - name: Build mukham
+        run: docker run --rm -it mukham-pi4
 
 
