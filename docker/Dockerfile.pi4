@@ -16,7 +16,10 @@ RUN apt-get install -y git cmake gcc-aarch64-linux-gnu \
 
 ADD . mukham
 
-WORKDIR mukham
+RUN mkdir mukham/build
 
+WORKDIR mukham/build
 
-CMD ["/bin/bash"]
+RUN cmake ..
+
+CMD ["/bin/bash", "-c", "cmake --build ."]

@@ -1,4 +1,13 @@
-.git
-.cache
-scripts/.venv
-build
+*
+.*
+
+!src/
+!test/
+!models/*.so
+!imgui/
+!implot/
+!dlib/
+!bin/
+!tvm/
+!assets/
+!CMakeLists.txt
