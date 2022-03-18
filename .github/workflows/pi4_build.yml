@@ -23,7 +23,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run: docker build -t --no-cache mukham-pi4 -f docker/Dockerfile.pi4 .
+        run: docker build --no-cache -t mukham-pi4 -f docker/Dockerfile.pi4 .
 
       - name: Build mukham
         run: docker run --rm -it mukham-pi4
