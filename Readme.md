@@ -1,4 +1,4 @@
-![example workflow](https://github.com/abhilb/mukham/actions/workflows/cmake.yml/badge.svg)
+[![Raspberry PI 4 Build](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml)
 
 ```
     __  ___            __      __                      
