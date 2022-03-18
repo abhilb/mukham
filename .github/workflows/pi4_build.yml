@@ -28,6 +28,6 @@ jobs:
         run: docker build --no-cache -t mukham-pi4 -f docker/Dockerfile.pi4 .
 
       - name: Build mukham
-        run: docker run --rm -it mukham-pi4
+        run: docker run --rm mukham-pi4
 
 
