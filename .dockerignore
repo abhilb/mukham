@@ -10,4 +10,5 @@
 !bin/
 !tvm/
 !assets/
+!spdlog/
 !CMakeLists.txt
