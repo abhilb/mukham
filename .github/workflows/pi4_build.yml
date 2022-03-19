@@ -28,7 +28,10 @@ jobs:
         run: docker build --no-cache -t mukham-pi4 -f docker/Dockerfile.pi4 .
 
       - name: Build mukham
-        run: docker run --rm -v $PWD/mukham.pi4.tar.gz:/mukham/build/mukham.pi4.tar.gz mukham-pi4
+        run: docker run --name mukham-pi4-build mukham-pi4
+
+      - name: Copy artefacts
+        run: docker cp mukham-pi4-build:/mukham/build/mukham.pi4.tar.gz .
 
       - name: Release
         uses: "marvinpinto/action-automatic-releases@latest"
