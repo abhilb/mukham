@@ -1,2 +1,3 @@
 cmake ..
-make -j 8
+make -j 4
+tar -zcvf mukham.pi4.tar.gz bin

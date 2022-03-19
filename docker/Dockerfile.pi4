@@ -12,14 +12,17 @@ RUN apt-get install -y git cmake gcc-aarch64-linux-gnu \
     libedit-dev \
     libxml2-dev \
     libopenblas-dev \
-    liblapack-dev
+    liblapack-dev \
+    gzip
 
 ADD . mukham
 
 RUN mkdir mukham/build
 
+ADD ./build.sh mukham/build
+
 WORKDIR mukham/build
 
 RUN cmake ..
 
-CMD ["/bin/bash", "-c", "cmake --build ."]
+CMD ["/bin/bash", "-c", "build.sh"]
