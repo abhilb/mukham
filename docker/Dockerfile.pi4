@@ -19,7 +19,7 @@ ADD . mukham
 
 RUN mkdir mukham/build
 
-ADD ./build.sh mukham/build
+ADD ./build.sh mukham/build/
 
 WORKDIR mukham/build
 
