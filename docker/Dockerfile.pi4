@@ -25,4 +25,6 @@ WORKDIR mukham/build
 
 RUN cmake ..
 
+RUN chmod +x /mukham/build/build.sh
+
 CMD ["/bin/bash", "-c", "./build.sh"]
