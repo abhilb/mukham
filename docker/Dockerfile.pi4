@@ -25,4 +25,4 @@ WORKDIR mukham/build
 
 RUN cmake ..
 
-CMD ["/bin/bash", "-c", "build.sh"]
+CMD ["/bin/bash", "-c", "./build.sh"]
