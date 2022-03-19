@@ -31,23 +31,9 @@ jobs:
         run: docker run --rm -v $PWD/mukham.pi4.tar.gz:/mukham/build/mukham.pi4.tar.gz mukham-pi4
 
       - name: Release
-        uses: actions/create_release@v1
-        id: create_release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          draft: false
-          prerelease: false
-          release_name: mukham
-          tag_name: nightly
-          body_path: Readme.md
-
-      - name: Upload pi4 binaries
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./mukham.pi4.tar.gz
-          asset_name: mukham.pi4.tar.gz
-          asset_content_type: application/gzip
-
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          files: |
+            *.tar.gz
 
