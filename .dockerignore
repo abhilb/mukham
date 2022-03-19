@@ -3,7 +3,7 @@
 
 !src/
 !test/
-!models/*.so
+!models/
 !imgui/
 !implot/
 !dlib/
