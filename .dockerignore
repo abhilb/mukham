@@ -12,3 +12,4 @@
 !assets/
 !spdlog/
 !CMakeLists.txt
+!build.sh
