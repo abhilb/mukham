@@ -23,9 +23,8 @@ jobs:
           choco install curl
           curl -O https://www.libsdl.org/release/SDL2-2.0.20-win32-x64.zip
           choco install 7zip
-          7z x SDL2-2.0.20-win32-x64.zip -oSDL2
+          7z x SDL2-2.0.20-win32-x64.zip -oc:/tools/SDL2
 
       - name: Check paths
         run: |
-          pwd
-          dir /S
+          dir c:/tools
