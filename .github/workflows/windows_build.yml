@@ -17,3 +17,10 @@ jobs:
 
       - name: Install OpenCV
         run: choco install opencv
+
+      - name: Install SDL
+        run: choco install curl
+        run: curl -O https://www.libsdl.org/release/SDL2-2.0.20-win32-x64.zip
+        run: choco install 7zip
+        run: 7z x SDL2-2.0.20-win32-x64.zip -oSDL2
+        run: dir
