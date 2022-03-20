@@ -1,0 +1,19 @@
+name: Windows Build
+
+on: push
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+      runs-on: windows-2019
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Install OpenCV
+        run: choco install opencv
