@@ -1,6 +1,8 @@
 [![Raspberry PI 4 Build](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml)
 <br/>
 [![Linux Build](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml)
+<br/>
+[![Windows Build](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml)
 
 ```
     __  ___            __      __                      
