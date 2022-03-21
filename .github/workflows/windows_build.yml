@@ -24,11 +24,13 @@ jobs:
           curl -O https://www.libsdl.org/release/SDL2-devel-2.0.20-VC.zip
           choco install 7zip
           7z x SDL2-devel-2.0.20-VC.zip -oc:/tools/SDL2
+          cp sdl2-config.cmake C:/tools/SDL2/SDL2-2.0.20/
 
       - name: Check paths
         run: |
           dir c:/tools
           dir c:/tools/SDL2
+          dir c:/tools/SDL2-2.0.20
           dir *.txt
 
       - name: Install cmake
@@ -36,10 +38,9 @@ jobs:
 
       - name: Build mukham
         run: |
-          cp sdl2-config.cmake C:/tools/SDL2/
           mkdir build
           cd build
-          set SDL2_DIR=C:/tools/SDL2
+          set SDL2_DIR=C:/tools/SDL2/SDL2-2.0.20
           set OpenCV_DIR=C:/tools/opencv/build
           cmake ..
           cmake --build .
