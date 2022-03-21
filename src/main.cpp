@@ -325,12 +325,14 @@ int main(int argc, char **argv) {
             ImGui::End();
 
             ImGui::Begin("Landmark detection time");
+#if 0
             ImPlot::SetNextPlotLimitsX(landmark_detect_time.x_min,
                                        landmark_detect_time.x_max,
                                        ImGuiCond_Always);
             ImPlot::SetNextPlotLimitsY(landmark_detect_time.y_min - 5,
                                        landmark_detect_time.y_max + 5,
                                        ImGuiCond_Always);
+#endif
             if (ImPlot::BeginPlot("##Processing Time 1", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
                 // Face mesh processing time plots
@@ -343,12 +345,14 @@ int main(int argc, char **argv) {
             ImGui::End();
 
             ImGui::Begin("Face detection time");
+#if 0
             ImPlot::SetNextPlotLimitsX(face_detect_time.x_min,
                                        face_detect_time.x_max,
                                        ImGuiCond_Always);
             ImPlot::SetNextPlotLimitsY(face_detect_time.y_min - 5,
                                        face_detect_time.y_max + 5,
                                        ImGuiCond_Always);
+#endif
             if (ImPlot::BeginPlot("##Processing Time 2", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
                 // Face detection processing time plots
@@ -359,6 +363,7 @@ int main(int argc, char **argv) {
             }
             ImGui::End();
 
+#if 0
             ImGui::Begin("Background elimination time");
             ImPlot::SetNextPlotLimitsX(bg_elimination_time.x_min,
                                        bg_elimination_time.x_max,
@@ -374,6 +379,7 @@ int main(int argc, char **argv) {
                 ImPlot::EndPlot();
             }
             ImGui::End();
+#endif
 
             ImGui::Begin("Parameters");
             if (ImGui::CollapsingHeader("Preprocessing")) {

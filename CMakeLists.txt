@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to Release")
     set(CMAKE_BUILD_TYPE "Release")
-endif()
+endif ()
 
 project(Mukham VERSION 0.1)
 
@@ -49,10 +49,11 @@ add_executable(${PROJECT_NAME} src/main.cpp
     ${TVM_SRC}/apps/howto_deploy/tvm_runtime_pack.cc)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DMLC_USE_LOGGING_LIBRARY=\<tvm/runtime/logging.h\>)
-if(WIN32)
+if (WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC TVM_EXPORTS)
     target_compile_definitions(${PROJECT_NAME} PUBLIC NOMINMAX)
-endif()
+    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/wd4068 /wd4273")
+endif ()
 
 message(STATUS ${CMAKE_BINARY_DIR})
 set_target_properties( ${PROJECT_NAME}
@@ -79,9 +80,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_DL_LIBS})
 target_link_libraries(${PROJECT_NAME} PUBLIC dlib::dlib)
 
-if(NOT WIN32)
+if (NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PUBLIC "stdc++fs")
-endif()
+endif ()
 
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
