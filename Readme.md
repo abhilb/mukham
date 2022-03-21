@@ -28,9 +28,14 @@ Supports the following models now:
 
 ### Face Landmarks
 
-- Facemesh
-- Dlib
-![](assets/screenshot.gif)
+| Model                   | Status  |
+| -----                   | :----:  |
+| Dlib                    | Working |
+| Facemesh                | Working |
+| Facemesh (/w attention) | WIP     |
+| PFLD                    | WIP     |
+
+![Screenshot](assets/screenshot.gif)
 
 ## Build Instructions
 ### Windows
