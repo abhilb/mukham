@@ -4,6 +4,8 @@ on: push
 
 env:
   BUILD_TYPE: Release
+  SDL2_DIR: C:/tools/SDL2/SDL2-2.0.20
+  OpenCV_DIR: C:/tools/opencv/build
 
 jobs:
   build:
@@ -40,7 +42,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          set SDL2_DIR=C:/tools/SDL2/SDL2-2.0.20
-          set OpenCV_DIR=C:/tools/opencv/build
           cmake ..
           cmake --build .
