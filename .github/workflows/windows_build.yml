@@ -30,7 +30,7 @@ jobs:
         run: |
           dir c:/tools
           dir c:/tools/SDL2
-          dir c:/tools/SDL2-2.0.20
+          dir c:/tools/SDL2/SDL2-2.0.20
           dir *.txt
 
       - name: Install cmake
