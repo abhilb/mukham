@@ -44,3 +44,16 @@ jobs:
           cd build
           cmake -Wno-dev ..
           cmake --build . --target ALL_BUILD --config Release
+          copy C:/tools/SDL2/SDL2-2.20/lib/x64/SDL2.dll bin/Release
+          copy C:/tools/opencv/build/x64/vc15/bin/*.dll bin/Release
+          7z a mukham-win-x64.zip bin/*
+
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            *.zip
