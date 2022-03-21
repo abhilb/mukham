@@ -28,6 +28,7 @@ jobs:
       - name: Check paths
         run: |
           dir c:/tools
+          dir c:/tools/SDL2
           dir *.txt
 
       - name: Install cmake
