@@ -28,3 +28,15 @@ jobs:
       - name: Check paths
         run: |
           dir c:/tools
+
+      - name: Install cmake
+        run: choco install cmake
+
+      - name: Build mukham
+        run: |
+          mkdir mukham/build
+          cd mukham/build
+          set SDL2_DIR=C:/tools/SDL2
+          set OpenCV_DIR=C:/tools/opencv/build
+          cmake ..
+          cmake --build .
