@@ -1,6 +1,6 @@
 name: Windows Build
 
-on: push
+on: workflow_dispatch
 
 env:
   BUILD_TYPE: Release
@@ -42,5 +42,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..
-          cmake --build .
+          cmake -Wno-dev ..
+          cmake --build . --target ALL_BUILD --config Release
