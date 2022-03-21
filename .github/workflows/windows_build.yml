@@ -35,6 +35,7 @@ jobs:
 
       - name: Build mukham
         run: |
+          cp sdl2-config.cmake C:/tools/SDL2/
           mkdir build
           cd build
           set SDL2_DIR=C:/tools/SDL2
