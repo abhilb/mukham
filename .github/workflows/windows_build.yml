@@ -30,10 +30,8 @@ jobs:
 
       - name: Check paths
         run: |
-          dir c:/tools
-          dir c:/tools/SDL2
-          dir c:/tools/SDL2/SDL2-2.0.20
-          dir *.txt
+          Get-ChildItem C:/tools/opencv/build/x64 -recurse
+          Get-ChildItem C:/tools/SDL2 -recurse
 
       - name: Install cmake
         run: choco install cmake
@@ -44,8 +42,6 @@ jobs:
           cd build
           cmake -Wno-dev ..
           cmake --build . --target ALL_BUILD --config Release
-          copy C:/tools/SDL2/SDL2-2.20/lib/x64/SDL2.dll bin/Release
-          copy C:/tools/opencv/build/x64/vc15/bin/*.dll bin/Release
           7z a mukham-win-x64.zip bin/*
 
       - name: Release
