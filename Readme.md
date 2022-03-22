@@ -1,8 +1,3 @@
-[![Raspberry PI 4 Build](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml)
-<br/>
-[![Linux Build](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml)
-<br/>
-[![Windows Build](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml)
 
 ```
     __  ___            __      __
@@ -13,7 +8,16 @@
 
 ```
 
-A framework to test various face detetion and face landmarks models.
+A GUI Application to detect faces and face landmarks. It uses [Apache TVM](https://github.com/apache/tvm) for model inference.
+
+It works on the following targets:
+
+| Target         | OS      | Build Status                                                                                                                                                             |
+| ------         | :--:    | :----------:                                                                                                                                                             |
+| x86            | Windows | [![Windows Build](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/windows_build.yml) |
+| x86            | Linux   | [![Linux Build](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/linux_build.yml)       |
+| Raspberry PI 4 |         | [![Raspberry PI 4 Build](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml/badge.svg)](https://github.com/abhilb/mukham/actions/workflows/pi4_build.yml)  |
+
 Supports the following models now:
 
 ### Face detection
