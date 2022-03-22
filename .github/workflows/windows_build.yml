@@ -42,6 +42,8 @@ jobs:
           cd build
           cmake -Wno-dev ..
           cmake --build . --target ALL_BUILD --config Release
+          copy C:/tools/opencv/build/x64/vc15/bin/*.dll bin/
+          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll bin/
           7z a mukham-win-x64.zip bin/*
 
       - name: Release
@@ -52,4 +54,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            *.zip
+            mukham-win-x64.zip
