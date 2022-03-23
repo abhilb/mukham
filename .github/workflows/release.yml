@@ -1,0 +1,25 @@
+
+name: Linux Build
+
+on: workflow_dispatch
+
+jobs:
+  build_for_linux:
+    uses: abhilb/mukham/.github/workflows/linux_build.yml
+
+  build_for_windows:
+    uses: abhilb/mukham/.github/workflows/windows_build.yml
+
+  release:
+    steps:
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ${{github.workspace}}/mukham.tar.gz
+            mukham-win-x64.zip
+

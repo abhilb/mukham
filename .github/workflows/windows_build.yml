@@ -51,14 +51,4 @@ jobs:
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
           copy C:/tools/opencv/build/x64/vc15/bin/*.dll ${{github.workspace}}/build/bin/
           copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll ${{github.workspace}}/build/bin/
-          7z a ${{github.workspace}}/mukham-win-x64.zip ${{github.workspace}}/build/bin/*
-
-      - name: Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            ${{github.workspace}}/mukham-win-x64.zip
+          7z a mukham-win-x64.zip ${{github.workspace}}/build/bin/*
