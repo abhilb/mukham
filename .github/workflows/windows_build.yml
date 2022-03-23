@@ -36,15 +36,22 @@ jobs:
       - name: Install cmake
         run: choco install cmake
 
+      - name: Convert models
+        run: |
+          choco install python3 --version=3.8.10
+          pip install tlcpack-nightly -f https://tlcpack.ai/wheels
+          pip install tflite==2.1.0 --user
+          cd scripts
+          python convert_blazeface.py
+          python convert_facemesh.py
+
       - name: Build mukham
         run: |
-          mkdir build
-          cd build
-          cmake -Wno-dev ..
-          cmake --build . --target ALL_BUILD --config Release
-          copy C:/tools/opencv/build/x64/vc15/bin/*.dll bin/
-          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll bin/
-          7z a mukham-win-x64.zip bin/*
+          cmake -B ${{github.workspace}}/build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+          copy C:/tools/opencv/build/x64/vc15/bin/*.dll ${{github.workspace}}/build/bin/
+          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll ${{github.workspace}}/build/bin/
+          7z a ${{github.workspace}}/mukham-win-x64.zip ${{github.workspace}}/build/bin/*
 
       - name: Release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -54,4 +61,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            mukham-win-x64.zip
+            ${{github.workspace}}/mukham-win-x64.zip
