@@ -6,16 +6,15 @@ from pathlib import Path
 import tflite
 import tvm
 from tvm import relay, transform
-from tvm import te
-import argparse
+import platform
 
 def convert(model_path: Path, batch: int, convert) -> None:
     """
-    Converts the facemesh tflite model to 
-    shared object that can then be used in 
+    Converts the facemesh tflite model to
+    shared object that can then be used in
     apache tvm runtime
 
-    @params: 
+    @params:
     model_name : path to the tflite model
 
     @returns:
@@ -36,9 +35,9 @@ def convert(model_path: Path, batch: int, convert) -> None:
     input_tensor = "input_1"
     input_shape  = (batch, 192, 192, 3)
     input_dtype  = "float32"
-    
+
     mod, params = relay.frontend.from_tflite(
-        tflite_model, 
+        tflite_model,
         shape_dict = {input_tensor: input_shape},
         dtype_dict = {input_tensor: input_dtype}
     )
@@ -57,16 +56,18 @@ def convert(model_path: Path, batch: int, convert) -> None:
         if convert:
             mod = seq(mod)
         lib = relay.build(mod, target, params=params)
-        lib.export_library(str(model_path.with_suffix(".so")))
+        if platform.system() == 'Windows':
+            output_file = model_path.with_suffix(".dll")
+        else:
+            output_file = model_path.with_suffix(".so")
+        lib.export_library(str(output_file))
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help="Path to the model file", type=str, required=True)
-    parser.add_argument('-b', '--batch', help="Batch size", type=int, required=True)
-    parser.add_argument('-c', '--convert', action="store_true", help="Covert layout")
-
-    args = vars(parser.parse_args())
-    print(args)
-    convert(Path(args['input']), int(args['batch']), args['convert'])
-    
+    model_path = (
+        Path(__file__).absolute().parents[1]
+        / "models"
+        / "facemesh"
+        / "face_landmark.tflite"
+    )
+    convert(model_path, 1, False)
