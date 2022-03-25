@@ -1,18 +1,84 @@
 
-name: Linux Build
+name: Release Build
 
 on: workflow_dispatch
 
-jobs:
-  build_for_linux:
-    uses: abhilb/mukham/.github/workflows/linux_build.yml
+env:
+  BUILD_TYPE: Release
 
-  build_for_windows:
-    uses: abhilb/mukham/.github/workflows/windows_build.yml
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{matrix.os}}
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            submodules: 'recursive'
+
+        - name: Install Deps
+          if : matrix.os == 'ubuntu-latest'
+          run: |
+            sudo apt-get update -y -qq
+            sudo apt-get install -y libsdl2-dev
+            sudo apt-get install -y libopencv-dev python3-opencv
+            sudo apt-get install python3 python3-pip build-essential python-dev
+
+        - name: Install Deps - windows
+          if: matrix.os == 'windows-latest'
+          run: |
+            choco install opencv
+            choco install curl
+            choco install cmake
+            curl -O https://www.libsdl.org/release/SDL2-devel-2.0.20-VC.zip
+            choco install 7zip
+            7z x SDL2-devel-2.0.20-VC.zip -oc:/tools/SDL2
+            cp sdl2-config.cmake C:/tools/SDL2/SDL2-2.0.20/
+            Get-ChildItem C:/tools/opencv/build/x64 -recurse
+            Get-ChildItem C:/tools/SDL2 -recurse
+
+        - name: Configure CMake
+          run: cmake -B $${github.workspace}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+        - name: Convert models
+          run: |
+            python3 --version
+            pip3 install tlcpack-nightly -f https://tlcpack.ai/wheels
+            pip3 install tflite==2.1.0 --user
+            cd scripts
+            python3 convert_blazeface.py
+            python3 convert_facemesh.py
+
+        - name: Linux Build
+          if : matrix.os == 'ubuntu-latest'
+          run: |
+            cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+            tar -zcvf ${{github.workspace}}/mukham.tar.gz ${{github.workspace}}/build/bin
+
+        - name: Windows Build
+          if : matrix.os == 'windows-latest'
+          run: |
+            cmake -B ${{github.workspace}}/build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+            cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+            copy C:/tools/opencv/build/x64/vc15/bin/*.dll ${{github.workspace}}/build/bin/
+            copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll ${{github.workspace}}/build/bin/
+            7z a mukham-win-x64.zip ${{github.workspace}}/build/bin/*
 
   release:
+    name: "Release"
+    needs: build
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Release
+      - uses: actions/download-artifact@v2
+
+      - name: Display artifacts
+        run: ls -R
+
+      - name: Github release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -20,6 +86,6 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            ${{github.workspace}}/mukham.tar.gz
+            mukham-linux-x64.tar.gz
             mukham-win-x64.zip
 
