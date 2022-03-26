@@ -53,18 +53,20 @@ jobs:
       - name: Linux Build
         if : matrix.os == 'ubuntu-latest'
         run: |
-          cmake -B $${github.workspace}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-          tar -zcvf ${{github.workspace}}/mukham.tar.gz ${{github.workspace}}/build/bin
+          cmake -B build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build build --config ${{env.BUILD_TYPE}}
+          tar -zcvf mukham.tar.gz build/bin
+          ls
 
       - name: Windows Build
         if : matrix.os == 'windows-latest'
         run: |
-          cmake -B ${{github.workspace}}/build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-          copy C:/tools/opencv/build/x64/vc15/bin/*.dll ${{github.workspace}}/build/bin/
-          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll ${{github.workspace}}/build/bin/
-          7z a mukham-win-x64.zip ${{github.workspace}}/build/bin/*
+          cmake -B build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build build --config ${{env.BUILD_TYPE}}
+          copy C:/tools/opencv/build/x64/vc15/bin/*.dll build/bin/
+          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll build/bin/
+          7z a mukham-win-x64.zip build/bin/*
+          Get-ChildItem .
 
   release:
     name: "Release"
