@@ -40,11 +40,6 @@ jobs:
           Get-ChildItem C:/tools/opencv/build/x64 -recurse
           Get-ChildItem C:/tools/SDL2 -recurse
 
-      - name: Configure CMake
-        run: |
-          mkdir $${github.workspace}/build
-          cmake -B $${github.workspace}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
       - name: Convert models
         run: |
           python3 --version
@@ -57,6 +52,7 @@ jobs:
       - name: Linux Build
         if : matrix.os == 'ubuntu-latest'
         run: |
+          cmake -B $${github.workspace}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
           tar -zcvf ${{github.workspace}}/mukham.tar.gz ${{github.workspace}}/build/bin
 
