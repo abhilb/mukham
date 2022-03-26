@@ -26,12 +26,13 @@ jobs:
           sudo apt-get install -y libsdl2-dev
           sudo apt-get install -y libopencv-dev python3-opencv
           sudo apt-get install python3.8 python3-pip build-essential python-dev
+          python3 --version
+          pip3 install tlcpack-nightly -f https://tlcpack.ai/wheels
+          pip3 install tflite==2.1.0 --user
 
       - name: Install Deps - windows
         if: matrix.os == 'windows-latest'
         run: |
-          python3 --version
-          choco uninstall python3
           choco install opencv
           choco install curl
           choco install cmake
@@ -42,15 +43,23 @@ jobs:
           cp sdl2-config.cmake C:/tools/SDL2/SDL2-2.0.20/
           Get-ChildItem C:/tools/opencv/build/x64 -recurse
           Get-ChildItem C:/tools/SDL2 -recurse
+          py --list
+          py -3.8 -m pip install tlcpack-nightly -f https://tlcpack.ai/wheels
+          py -3.8 -m pip install tflite==2.1.0 --user
 
-      - name: Convert models
+      - name: Convert models - Linux
+        if : matrix.os == 'ubuntu-latest'
         run: |
-          python3 --version
-          pip3 install tlcpack-nightly -f https://tlcpack.ai/wheels
-          pip3 install tflite==2.1.0 --user
           cd scripts
           python3 convert_blazeface.py
           python3 convert_facemesh.py
+
+      - name: Convert models - Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd scripts
+          py -3.8 convert_blazeface.py
+          py -3.8 convert_facemesh.py
 
       - name: Linux Build
         if : matrix.os == 'ubuntu-latest'
