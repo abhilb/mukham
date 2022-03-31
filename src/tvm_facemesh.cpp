@@ -17,7 +17,7 @@ bool TVM_Facemesh::Detect(const cv::Mat& input, TVM_FacemeshResult& result) {
     // preprocessing
     cv::Mat scaled_image, preprocessed_image;
     cv::resize(input, scaled_image, cv::Size(input_width, input_height));
-    scaled_image.convertTo(preprocessed_image, CV_32FC4, 1.0 / 255.0);
+    scaled_image.convertTo(preprocessed_image, CV_32FC3, 1.0 / 255.0);
 
     auto image_size = input_width * input_height * channels * sizeof(float);
     input_tensor.CopyFromBytes(preprocessed_image.data, image_size);

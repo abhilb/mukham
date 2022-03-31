@@ -30,7 +30,7 @@ class TVM_Facemesh {
         try {
             spdlog::info("Model: {}", model_path.string());
             if (!fs::exists(model_path)) {
-                spdlog::info("Model exists: {}", fs::exists(model_path));
+                spdlog::error("Facemesh model exists: {}", fs::exists(model_path));
                 can_execute = false;
             } else {
                 tr::Module mod_factory =
