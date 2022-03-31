@@ -145,13 +145,13 @@ int main(int argc, char **argv) {
 #ifdef _WIN32
     auto model_path = cwd / "models/facemesh/face_landmark.dll";
     auto blazeface_model_path =
-        cwd / "models/blazeface/face_detection_short_range.dll";
+        cwd / "models/blazeface/face_detection_front.dll";
 #else
     auto model_path =
         cwd / fs::path(std::string("models/facemesh/face_landmark.so"));
     auto blazeface_model_path =
         cwd /
-        fs::path(std::string("models/blazeface/face_detection_short_range.so"));
+        fs::path(std::string("models/blazeface/face_detection_front.so"));
 #endif
 
     int batch_size = 1;
@@ -236,8 +236,8 @@ int main(int argc, char **argv) {
     bool record_video = false;
     bool play_video = false;
     bool is_camera_open = false;
-    int face_detect_model = 0;
-    int video_src = 0;
+    int face_detect_model = 3;
+    int video_src = 1;
     int prev_video_src = 0;
     unsigned int nb_frames = 0;
     float alpha = 1.2;
@@ -325,16 +325,16 @@ int main(int argc, char **argv) {
             ImGui::End();
 
             ImGui::Begin("Landmark detection time");
-#if 0
-            ImPlot::SetNextPlotLimitsX(landmark_detect_time.x_min,
-                                       landmark_detect_time.x_max,
-                                       ImGuiCond_Always);
-            ImPlot::SetNextPlotLimitsY(landmark_detect_time.y_min - 5,
-                                       landmark_detect_time.y_max + 5,
-                                       ImGuiCond_Always);
-#endif
             if (ImPlot::BeginPlot("##Processing Time 1", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
+                ImPlot::SetupAxisLimits(ImAxis_X1,
+                    landmark_detect_time.x_min,
+                    landmark_detect_time.x_max,
+                    ImGuiCond_Always);
+                ImPlot::SetupAxisLimits(ImAxis_Y1,
+                    landmark_detect_time.y_min - 5,
+                    landmark_detect_time.y_max + 5,
+                    ImGuiCond_Always);
                 // Face mesh processing time plots
                 ImPlot::PlotLine("Landmark detection",
                                  landmark_detect_time.x.data(),
@@ -345,16 +345,16 @@ int main(int argc, char **argv) {
             ImGui::End();
 
             ImGui::Begin("Face detection time");
-#if 0
-            ImPlot::SetNextPlotLimitsX(face_detect_time.x_min,
-                                       face_detect_time.x_max,
-                                       ImGuiCond_Always);
-            ImPlot::SetNextPlotLimitsY(face_detect_time.y_min - 5,
-                                       face_detect_time.y_max + 5,
-                                       ImGuiCond_Always);
-#endif
             if (ImPlot::BeginPlot("##Processing Time 2", "Frames", "Time (ms)",
                                   ImVec2(-1, -1))) {
+                ImPlot::SetupAxisLimits(ImAxis_X1,
+                    face_detect_time.x_min,
+                    face_detect_time.x_max,
+                    ImGuiCond_Always);
+                ImPlot::SetupAxisLimits(ImAxis_Y1,
+                    face_detect_time.y_min - 5,
+                    face_detect_time.y_max + 5,
+                    ImGuiCond_Always);
                 // Face detection processing time plots
                 ImPlot::PlotLine("Face Detection", face_detect_time.x.data(),
                                  face_detect_time.y.data(),
@@ -362,24 +362,6 @@ int main(int argc, char **argv) {
                 ImPlot::EndPlot();
             }
             ImGui::End();
-
-#if 0
-            ImGui::Begin("Background elimination time");
-            ImPlot::SetNextPlotLimitsX(bg_elimination_time.x_min,
-                                       bg_elimination_time.x_max,
-                                       ImGuiCond_Always);
-            ImPlot::SetNextPlotLimitsY(bg_elimination_time.y_min - 5,
-                                       bg_elimination_time.y_max + 5,
-                                       ImGuiCond_Always);
-            if (ImPlot::BeginPlot("##Processing Time 3", "Frames", "Time (ms)",
-                                  ImVec2(-1, -1))) {
-                ImPlot::PlotLine(
-                    "Background Elimination", bg_elimination_time.x.data(),
-                    bg_elimination_time.y.data(), bg_elimination_time._history);
-                ImPlot::EndPlot();
-            }
-            ImGui::End();
-#endif
 
             ImGui::Begin("Parameters");
             if (ImGui::CollapsingHeader("Preprocessing")) {
@@ -469,20 +451,7 @@ int main(int argc, char **argv) {
                     // increase the brightness
                     small_frame.convertTo(adjusted_frame, -1, alpha, beta);
 
-                    // BG elmination
                     auto start = std::chrono::steady_clock::now();
-                    if (enable_bg_elimination) {
-                        cv::Mat seg_map;
-                        deeplab_model.Segment(adjusted_frame, seg_map);
-                    }
-                    auto end = std::chrono::steady_clock::now();
-                    auto bg_elmination_duration =
-                        std::chrono::duration_cast<std::chrono::milliseconds>(
-                            end - start)
-                            .count();
-                    bg_elimination_time.AddPoint(bg_elmination_duration);
-
-                    start = std::chrono::steady_clock::now();
                     std::vector<cv::Rect2d> faces;
                     std::vector<cv::Point2d> keypoints;
 
@@ -497,9 +466,7 @@ int main(int argc, char **argv) {
                                 adjusted_frame);
                             break;
                         case 2:
-                            cv::cvtColor(frame, bgr_frame, cv::COLOR_RGB2BGR);
-                            faces =
-                                opencv_tf_face_detector.DetectFace(bgr_frame);
+                            faces = opencv_tf_face_detector.DetectFace(adjusted_frame);
                             break;
                         case 3:
                             auto detections =
@@ -513,7 +480,7 @@ int main(int argc, char **argv) {
                             }
                             break;
                     }
-                    end = std::chrono::steady_clock::now();
+                    auto end = std::chrono::steady_clock::now();
 
                     auto face_detect_duration =
                         std::chrono::duration_cast<std::chrono::milliseconds>(
