@@ -1,6 +1,9 @@
 name: Release Build
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 env:
@@ -77,8 +80,8 @@ jobs:
         run: |
           cmake -B build -Wno-dev -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           cmake --build build --config ${{env.BUILD_TYPE}}
-          copy C:/tools/opencv/build/x64/vc15/bin/*.dll build/bin/
-          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll build/bin/
+          copy C:/tools/opencv/build/x64/vc15/bin/*.dll build/bin/Release
+          copy C:/tools/SDL2/SDL2-2.0.20/lib/x64/*.dll build/bin/Release
           7z a mukham-win-x64.zip build/bin/*
           Get-ChildItem .
 
